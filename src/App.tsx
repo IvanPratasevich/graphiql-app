@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
 import './App.css';
 import { Button } from '@mantine/core';
 import { useRoutes, Navigate, useLocation } from 'react-router';
@@ -31,7 +30,13 @@ function App() {
           />
         </a>
         <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+          <img
+            src={
+              'https://w1.pngwing.com/pngs/196/853/png-transparent-react-logo-javascript-stack-overflow-front-and-back-ends-github-freecodecamp-redux-computer-software.png'
+            }
+            className="logo react"
+            alt="React logo"
+          />
         </a>
       </div>
       <h1>Vite + React</h1>
