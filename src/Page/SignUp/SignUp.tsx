@@ -1,4 +1,4 @@
-import { Form } from '../../componenets/form/Form';
+import { Form } from '../../componenets/Form/Form';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 

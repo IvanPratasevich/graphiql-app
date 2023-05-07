@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { Form } from '../../componenets/form/Form';
+import { Form } from '../../componenets/Form/Form';
 import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {

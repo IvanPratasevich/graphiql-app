@@ -25,7 +25,6 @@ export function Form({ title, handleClick }: Form) {
   });
 
   const wrappeIsValid = () => {
-    // form.isValid();
     form.isValid() && handleClick(form.values.email, valuePassword);
   };
 
