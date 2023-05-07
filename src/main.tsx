@@ -1,13 +1,29 @@
 import React from 'react';
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, MantineTheme } from '@mantine/core';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import './index.css';
+import '../index.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
+    <MantineProvider
+      theme={{
+        colorScheme: 'dark',
+        components: {
+          NavLink: {
+            styles: (theme: MantineTheme) => ({
+              root: {
+                'span.mantine-NavLink-label': { fontSize: theme.spacing.md, fontWeight: 600 },
+                width: 'auto',
+              },
+            }),
+          },
+        },
+      }}
+      withGlobalStyles
+      withNormalizeCSS
+    >
       <BrowserRouter>
         <App />
       </BrowserRouter>
