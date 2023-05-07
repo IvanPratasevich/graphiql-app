@@ -1,56 +1,41 @@
-import { useState } from 'react';
 import './App.css';
-import { Button } from '@mantine/core';
-import { useRoutes, Navigate, useLocation } from 'react-router';
+
+import { Navigate, Routes, Route } from 'react-router';
+
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { auth } from './firebase/firebase';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+import { privateRoutes, publicRoutes } from '../router';
+import { SIGNUP_ROUTE, MAIN_ROUTE } from './utils/consts';
+
+// const res = auth.currentUser?.getIdTokenResult();
 
 function App() {
-  const routes = useRoutes([
-    { path: '/', element: <h1>GraphiQL route</h1> },
-    { path: '/welcome', element: <h1>Welcome route</h1> },
-    { path: '/404', element: <h1>Not found route</h1> },
-    { path: '*', element: <Navigate to={'/404'} /> },
-  ]);
+  console.log(auth.currentUser?.email);
+  const str = useAuthState(auth);
+  console.log(str[0]?.email);
+  const userValid = !!str[0]?.email;
 
-  const location = useLocation();
-
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      {location.pathname}
-      {routes}
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img
-            src={
-              'https://raw.githubusercontent.com/vitejs/vite/229c5925c8c84709b8e06e8092a255cb820dafc9/docs/public/logo.svg'
-            }
-            className="logo"
-            alt="Vite logo"
-          />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img
-            src={
-              'https://w1.pngwing.com/pngs/196/853/png-transparent-react-logo-javascript-stack-overflow-front-and-back-ends-github-freecodecamp-redux-computer-software.png'
-            }
-            className="logo react"
-            alt="React logo"
-          />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <Button variant="outline" radius="md" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+  return userValid ? (
+    <Routes>
+      {privateRoutes.map(({ path, Component }) => (
+        <Route key={path} path={path} element={Component} />
+      ))}
+      <Route path="*" element={<Navigate to={MAIN_ROUTE} />} />
+    </Routes>
+  ) : (
+    <Routes>
+      {publicRoutes.map(({ path, Component }) => (
+        <Route key={path} path={path} element={Component} />
+      ))}
+      <Route path="*" element={<Navigate to={SIGNUP_ROUTE} />} />
+    </Routes>
   );
+  // getAuth().signOut();
+  // const email = getAuth().currentUser?.email
 }
 
 export default App;
