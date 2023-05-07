@@ -19,6 +19,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               },
             }),
           },
+          Image: {
+            styles: () => ({
+              root: {
+                'img.mantine-Image-image': {
+                  objectPosition: 'top',
+                },
+              },
+            }),
+          },
         },
       }}
       withGlobalStyles
