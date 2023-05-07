@@ -1,10 +1,11 @@
 import { useRoutes, Navigate } from 'react-router';
 import Header from './components/Header/Header';
+import Welcome from './components/Welcome/Welcome';
 
 function App() {
   const routes = useRoutes([
     { path: '/', element: <Navigate to={'/welcome'} /> },
-    { path: '/welcome', element: <h1>Welcome route</h1> },
+    { path: '/welcome', element: <Welcome /> },
     { path: '/404', element: <h1>Not found route</h1> },
     { path: '*', element: <Navigate to={'/404'} /> },
   ]);
