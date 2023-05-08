@@ -1,5 +1,6 @@
 import { Navigate, Routes, Route } from 'react-router';
 
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { auth } from './firebase/firebase';
@@ -8,15 +9,29 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { privateRoutes, publicRoutes } from '../router';
 import { SIGNUP_ROUTE, MAIN_ROUTE } from './utils/consts';
-import Header from './componenets/Header/Header';
+import Header from './components/Header/Header';
+import { useState } from 'react';
 
 // const res = auth.currentUser?.getIdTokenResult();
 
 function App() {
-  console.log(auth.currentUser?.email);
-  const str = useAuthState(auth);
-  console.log(str[0]?.email);
-  const userValid = !!str[0]?.email;
+  // console.log(auth.currentUser?.email);
+  // const str = useAuthState(auth);
+  // console.log(str[0]?.email);
+  // let userValid = !!str[0]?.email;
+  // let userValid = false;
+  // const auth = getAuth();
+
+  // auth.currentUser.getIdTokenResult();
+  // let userValid = false;
+  const [userValid, setuseValid] = useState(false);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setuseValid(true);
+    } else {
+      setuseValid(false);
+    }
+  });
 
   return userValid ? (
     <>

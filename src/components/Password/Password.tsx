@@ -51,7 +51,7 @@ export function PasswordIsValidated({ setValidationPassword, setValuePassword }:
   }, [value]);
 
   return (
-    <Box maw={340} mx="auto">
+    <Box maw={400} mx="auto">
       <Popover
         opened={popoverOpened}
         position="bottom"

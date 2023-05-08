@@ -14,17 +14,16 @@ const HeaderAuth: FC = () => {
         Sign Up
       </Button> */}
 
-      <Button
+      {/* <Button
         color="red"
         radius="md"
         size="md"
         onClick={() => {
           auth.signOut();
-          console.log(auth.currentUser?.email);
         }}
       >
         Sign out
-      </Button>
+      </Button> */}
     </div>
   );
 };

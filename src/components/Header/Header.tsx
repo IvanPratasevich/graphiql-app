@@ -9,7 +9,7 @@ const Header: FC = () => {
     <header className={`${styles.header}`}>
       <Logo />
       <Navigation />
-      <HeaderAuth />
+      {/* <HeaderAuth /> */}
     </header>
   );
 };
