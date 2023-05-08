@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
 import HeaderAuth from '../HeaderAuth/HeaderAuth';

@@ -37,8 +37,6 @@ const UserCards: FC = () => {
     },
   ];
 
-  console.log('Hi!');
-
   return (
     <>
       {users.map((user) => (
