@@ -1,6 +1,7 @@
 import { useRoutes, Navigate } from 'react-router';
 import Header from './components/Header/Header';
 import Welcome from './components/Welcome/Welcome';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const routes = useRoutes([
@@ -14,6 +15,7 @@ function App() {
     <>
       <Header />
       {routes}
+      <Footer />
     </>
   );
 }
