@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
-import HeaderAuth from '../HeaderAuth/HeaderAuth';
 import Navigation from '../Navigation/Navigation';
 
 const Header: FC = () => {
@@ -29,7 +28,6 @@ const Header: FC = () => {
         >
           <Logo />
           <Navigation />
-          <HeaderAuth />
         </div>
       </div>
     </header>
