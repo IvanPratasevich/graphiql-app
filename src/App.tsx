@@ -4,58 +4,33 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { auth } from './firebase/firebase';
-
+import { Loader } from '@mantine/core';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { Suspense } from 'react';
 
 import { privateRoutes, publicRoutes } from '../router';
 import { SIGNUP_ROUTE, MAIN_ROUTE } from './utils/consts';
 import Header from './components/Header/Header';
 import { useState } from 'react';
+import AppRouter from './components/AppRouter/AppRouter';
+import { LoaderWrapper } from './components/LoaderWrapper/LoaderWrapper';
+import Footer from './components/Footer/Footer';
 
 // const res = auth.currentUser?.getIdTokenResult();
 
 function App() {
-  // console.log(auth.currentUser?.email);
-  // const str = useAuthState(auth);
-  // console.log(str[0]?.email);
-  // let userValid = !!str[0]?.email;
-  // let userValid = false;
-  // const auth = getAuth();
-
-  // auth.currentUser.getIdTokenResult();
-  // let userValid = false;
-  const [userValid, setuseValid] = useState(false);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setuseValid(true);
-    } else {
-      setuseValid(false);
-    }
-  });
-
-  return userValid ? (
-    <>
+  const [user, loading, error] = useAuthState(auth);
+  console.log(user);
+  if (loading) {
+    return <LoaderWrapper />;
+  }
+  return (
+    <Suspense fallback={<LoaderWrapper />}>
       <Header />
-      <Routes>
-        {privateRoutes.map(({ path, Component }) => (
-          <Route key={path} path={path} element={Component} />
-        ))}
-        <Route path="*" element={<Navigate to={MAIN_ROUTE} />} />
-      </Routes>
-    </>
-  ) : (
-    <>
-      <Header />
-      <Routes>
-        {publicRoutes.map(({ path, Component }) => (
-          <Route key={path} path={path} element={Component} />
-        ))}
-        <Route path="*" element={<Navigate to={SIGNUP_ROUTE} />} />
-      </Routes>
-    </>
+      <AppRouter />
+      <Footer />
+    </Suspense>
   );
-  // getAuth().signOut();
-  // const email = getAuth().currentUser?.email
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import { Main } from './src/Page/Main/Main';
 import { SignIn } from './src/Page/SignIn/SignIn';
 import { SignUp } from './src/Page/SignUp/SignUp';
-import { Welcome } from './src/Page/Welcome/Welcome';
+import Welcome from './src/Page/Welcome/Welcome';
 import { SIGNIN_ROUTE, SIGNUP_ROUTE, MAIN_ROUTE, WELCOME_ROUTE } from './src/utils/consts';
 
 export const publicRoutes = [
