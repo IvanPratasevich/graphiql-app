@@ -31,11 +31,9 @@ const UserCard: FC<{ data: IUser }> = ({ data }) => {
           </Text>
           <Group position="apart">
             {data.badges.map((badge, idx) => (
-              <>
-                <Badge key={idx + 1} color={data.colors[idx]} variant="light" size="md">
-                  {badge}
-                </Badge>
-              </>
+              <Badge key={idx + 1} color={data.colors[idx]} variant="light" size="md">
+                {badge}
+              </Badge>
             ))}
           </Group>
         </Flex>

@@ -1,10 +1,10 @@
-.footer {
+.footer__container {
   display: flex;
-  width: 75%;
+  max-width: 1357px;
   justify-content: space-between;
   margin: 0 auto;
   gap: 2em;
   align-items: center;
-  padding-top: 3em;
+  padding-top: 60px;
   padding-bottom: 20px;
 }
