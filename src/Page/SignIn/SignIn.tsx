@@ -16,6 +16,8 @@ export const SignIn = () => {
     }, 3000);
   }
   const handelLogin = (email: string, password: string) => {
+    setText('🌀 Loading... Data processing is underway...');
+    open();
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
@@ -29,7 +31,7 @@ export const SignIn = () => {
   };
   return (
     <>
-      <Modal opened={opened} onClose={close} size="auto" title="Sign-in">
+      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={300}>
         {text}
       </Modal>
       <Form title="Sign-in" handleClick={handelLogin} />

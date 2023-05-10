@@ -20,7 +20,6 @@ import Footer from './components/Footer/Footer';
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
-  console.log(user);
   if (loading) {
     return <LoaderWrapper />;
   }

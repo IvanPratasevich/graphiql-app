@@ -8,11 +8,14 @@ import { useDisclosure } from '@mantine/hooks';
 
 export const SignUp = () => {
   const [opened, { open, close }] = useDisclosure(false);
-
+  const [text, setText] = useState('');
   const navigate = useNavigate();
 
   const handelRegister = (email: string, password: string) => {
     const auth = getAuth();
+
+    setText('🌀 Loading... Data processing is underway...');
+    open();
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         localStorage.setItem('user', user.uid);
@@ -21,13 +24,13 @@ export const SignUp = () => {
       })
       .catch(() => {
         open();
+        setText('This email has already been registered');
       });
   };
   return (
     <>
-      {/* нужно будет обернуть в div */}
-      <Modal opened={opened} onClose={close} withCloseButton={false}>
-        This email has already been registered
+      <Modal opened={opened} onClose={close} withCloseButton={false} title="Sign-up" yOffset={300}>
+        {text}
       </Modal>
       <Form title="Sign-up" handleClick={handelRegister} />
     </>
