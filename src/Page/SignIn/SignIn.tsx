@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-export const SignIn = () => {
+const SignIn = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [text, setText] = useState('');
   const navigate = useNavigate();
@@ -16,6 +16,8 @@ export const SignIn = () => {
     }, 3000);
   }
   const handelLogin = (email: string, password: string) => {
+    setText('🌀 Loading... Data processing is underway...');
+    open();
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
@@ -29,10 +31,11 @@ export const SignIn = () => {
   };
   return (
     <>
-      <Modal opened={opened} onClose={close} size="auto" title="Sign-in">
+      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={300}>
         {text}
       </Modal>
       <Form title="Sign-in" handleClick={handelLogin} />
     </>
   );
 };
+export default SignIn;

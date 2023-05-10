@@ -4,6 +4,7 @@ import { useSetState } from '@mantine/hooks';
 import { useState } from 'react';
 import { PasswordIsValidated } from '../Password/Password';
 import styles from './Form.module.scss';
+import { windowInnerHeight } from '../../utils/window';
 
 interface Form {
   title: string;
@@ -30,10 +31,13 @@ export function Form({ title, handleClick }: Form) {
   };
 
   return (
-    <div className={`${styles.container__auth}`}>
+    <div
+      className={styles.container__auth}
+      style={{ height: windowInnerHeight - 160, paddingTop: windowInnerHeight / 2 - 215 }}
+    >
       <Box
         component="form"
-        maw={400}
+        w={400}
         mx="auto"
         onSubmit={form.onSubmit(() => {
           setState(form.values);
