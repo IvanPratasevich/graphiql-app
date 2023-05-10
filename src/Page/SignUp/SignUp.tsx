@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-export const SignUp = () => {
+const SignUp = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [text, setText] = useState('');
   const navigate = useNavigate();
@@ -36,3 +36,4 @@ export const SignUp = () => {
     </>
   );
 };
+export default SignUp;
