@@ -9,7 +9,7 @@ const FooterLogo: FC = () => {
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 552.8 205.3"
         width="200px"
-        height="auto"
+        height="100%"
       >
         <style
           dangerouslySetInnerHTML={{

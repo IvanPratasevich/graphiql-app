@@ -10,14 +10,26 @@ import Header from './components/Header/Header';
 import AppRouter from './components/AppRouter/AppRouter';
 import { LoaderWrapper } from './components/LoaderWrapper/LoaderWrapper';
 import Footer from './components/Footer/Footer';
+import { Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 // const res = auth.currentUser?.getIdTokenResult();
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  const [opened, { open, close }] = useDisclosure(false);
 
+  window.addEventListener('offline', () => {
+    open();
+  });
+  window.addEventListener('online', () => {
+    close();
+  });
   return (
     <>
+      <Modal opened={opened} onClose={close} withCloseButton={false} title="Connect" yOffset={300}>
+        {'Disconnect'}
+      </Modal>
       <Header />
       <Suspense fallback={<LoaderWrapper />}>
         {loading ? <LoaderWrapper /> : <AppRouter />}

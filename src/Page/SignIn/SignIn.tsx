@@ -4,29 +4,32 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
 
 const SignIn = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const navigate = useNavigate();
-  function hiddenPopup() {
-    setTimeout(() => {
-      close();
-      setText('');
-    }, 3000);
-  }
+
   const handelLogin = (email: string, password: string) => {
-    setText('🌀 Loading... Data processing is underway...');
-    open();
+    setLoading(true);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         navigate('/main');
+        setLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error.code == 'auth/wrong-password') {
+          setText('wrong password');
+        } else if (error.code == 'auth/user-not-found') {
+          setText('user not found');
+        } else {
+          setText(error.message);
+        }
         open();
-        setText('You have entered an incorrect login or password');
-        hiddenPopup();
+        setLoading(false);
       });
   };
   return (
@@ -34,7 +37,7 @@ const SignIn = () => {
       <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={300}>
         {text}
       </Modal>
-      <Form title="Sign-in" handleClick={handelLogin} />
+      {loading ? <LoaderWrapper /> : <Form title="Sign-up" handleClick={handelLogin} />}
     </>
   );
 };
