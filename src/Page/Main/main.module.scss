@@ -1,0 +1,61 @@
+.wrapper{
+  display: grid;
+  grid-template-columns: 1.7rem 1px 1fr 1fr ; 
+  height: calc(100vh - 160px);
+  padding-top: 140px;
+  gap:10px;
+}
+.wrapperDocs{
+  
+}
+
+.docs{
+  height:calc(100vh - 310px);
+  border: 1px solid rgb(60, 60, 247)
+
+}
+
+.wrapperRequest{
+  gap:10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapperRedactor, .wrapperVariables{
+  padding: 10px;
+  height: calc(50vh - 160px) ;
+  border: 1px solid rgb(60, 60, 247)
+}
+
+.wrapperRedactor{
+  display: grid;
+  grid-template-columns: 1fr 1.7rem; 
+}
+
+.wrapperVariables{
+  display: grid;
+  grid-template-rows: 2rem 1fr ; 
+}
+
+.redactor{
+background-color: rgba(83, 83, 248, 0.114);
+}
+
+.variables{
+  background-color: rgba(83, 83, 248, 0.114);
+}
+
+.wrapperButtons{
+  display: flex;
+}
+
+.wrapperResponse{
+  padding: 10px;
+  height:calc(100vh - 310px);
+  border: 1px solid rgb(60, 60, 247)
+}
+
+.active{
+
+  grid-template-columns: 1.7rem 0.3fr 1fr 1fr;
+}
