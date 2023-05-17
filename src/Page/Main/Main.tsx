@@ -2,42 +2,24 @@ import style from './main.module.scss';
 import { ActionIcon } from '@mantine/core';
 import { IconCircleCaretRight, IconClipboardData } from '@tabler/icons-react';
 import { Button } from '@mantine/core';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import DocsWrapper from '../../components/DocsWrapper/DocsWrapper';
+import EditorWrapper from '../../components/EditorWrapper/EditorWrapper';
+import { lazy } from 'react';
+import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
+import { AdditionalEditor } from '../../components/AdditionalEditor/AdditionalEditor';
+
+const Docs = lazy(() => import('../../components/Docs/Docs'));
+
 const Main = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <div className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
-      <div className={style.wrapperDocs}>
-        <ActionIcon
-          onClick={() => {
-            setOpen(!open);
-          }}
-        >
-          <IconClipboardData size="1.625rem"></IconClipboardData>
-        </ActionIcon>
-      </div>
-      <div className={style.docs}></div>
+      <DocsWrapper setOpen={setOpen} open={open} />
+      <Suspense fallback={<LoaderWrapper />}>{!open ? <Docs /> : <div></div>}</Suspense>
       <div className={style.wrapperRequest}>
-        <div className={style.wrapperRedactor}>
-          <div className={style.redactor}></div>
-          <div>
-            <ActionIcon color="blue">
-              <IconCircleCaretRight size="1.625rem" />
-            </ActionIcon>
-          </div>
-        </div>
-
-        <div className={style.wrapperVariables}>
-          <div className={style.wrapperButtons}>
-            <Button variant="subtle" color="gray" size="xs">
-              Variables
-            </Button>
-            <Button variant="subtle" color="gray" size="xs">
-              Headers
-            </Button>
-          </div>
-          <div className={style.variables}></div>
-        </div>
+        <EditorWrapper />
+        <AdditionalEditor></AdditionalEditor>
       </div>
 
       <div className={style.wrapperResponse} />
