@@ -1,7 +1,4 @@
 import style from './main.module.scss';
-import { ActionIcon } from '@mantine/core';
-import { IconCircleCaretRight, IconClipboardData } from '@tabler/icons-react';
-import { Button } from '@mantine/core';
 import { Suspense, useState } from 'react';
 import DocsWrapper from '../../components/DocsWrapper/DocsWrapper';
 import EditorWrapper from '../../components/EditorWrapper/EditorWrapper';
