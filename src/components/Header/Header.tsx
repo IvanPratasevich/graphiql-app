@@ -2,9 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
 import Navigation from '../Navigation/Navigation';
+import { Burger, Drawer } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 const Header: FC = () => {
   const [sticky, setSticky] = useState<boolean>(false);
+
+  const [opened, { toggle, close }] = useDisclosure(false);
 
   const handleScroll = (): void => (window.pageYOffset > 0 ? setSticky(true) : setSticky(false));
 
@@ -27,7 +31,36 @@ const Header: FC = () => {
           }
         >
           <Logo />
-          <Navigation />
+          <Navigation hidden={false} opened={opened} />
+          <Burger
+            size="lg"
+            color="#ffff00"
+            opened={false}
+            onClick={toggle}
+            className={styles.header__burger}
+          />
+          {opened && (
+            <Drawer
+              opened={opened}
+              onClose={close}
+              overlayProps={{ opacity: 0.5, blur: 4 }}
+              size="100%"
+            >
+              <div
+                className={styles.drawer__container}
+                onClick={() => {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  });
+
+                  close();
+                }}
+              >
+                <Navigation hidden={true} opened={opened} />
+              </div>
+            </Drawer>
+          )}
         </div>
       </div>
     </header>

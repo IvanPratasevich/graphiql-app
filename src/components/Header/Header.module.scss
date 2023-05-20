@@ -26,3 +26,20 @@
   max-width: 1357px;
   width: 100%;
 }
+
+.header__burger {
+  display: none;
+}
+
+.drawer__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+@media (max-width: 729px) {
+  .header__burger {
+    display: block;
+  }
+}

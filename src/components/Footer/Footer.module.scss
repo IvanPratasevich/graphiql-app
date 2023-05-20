@@ -8,3 +8,11 @@
   padding-top: 60px;
   padding-bottom: 20px;
 }
+
+@media (max-width: 489px) {
+  .footer__container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

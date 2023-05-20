@@ -20,11 +20,31 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               },
             }),
           },
+
+          Drawer: {
+            styles: (theme) => ({
+              root: {
+                '.mantine-Drawer-header': { display: 'none' },
+                '.mantine-Drawer-body': { padding: '0px' },
+              },
+            }),
+          },
+
           Image: {
             styles: () => ({
               root: {
                 'img.mantine-Image-image': {
                   objectPosition: 'top',
+                },
+              },
+            }),
+          },
+
+          Spoiler: {
+            styles: () => ({
+              root: {
+                'mantine-nqbdy3': {
+                  width: '100%',
                 },
               },
             }),

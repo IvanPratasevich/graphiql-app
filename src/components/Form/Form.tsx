@@ -33,7 +33,7 @@ export function Form({ title, handleClick }: Form) {
   return (
     <div
       className={styles.container__auth}
-      style={{ height: windowInnerHeight - 160, paddingTop: windowInnerHeight / 2 - 215 }}
+      style={{ height: windowInnerHeight - 160, paddingTop: '140px' }}
     >
       <Box
         component="form"
