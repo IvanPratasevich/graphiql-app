@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconX, IconCheck } from '@tabler/icons-react';
 import { PasswordInput, Progress, Text, Popover, Box } from '@mantine/core';
 import { propsPassword } from '../../type/tuype';
