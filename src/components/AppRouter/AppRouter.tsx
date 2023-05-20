@@ -8,28 +8,32 @@ import { auth } from '../../firebase/firebase';
 import { privateRoutes, publicRoutes } from '../../../router';
 import { SIGNUP_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 
-import { useState } from 'react';
-
-// const res = auth.currentUser?.getIdTokenResult();
+import { useEffect, useState } from 'react';
 
 function AppRouter() {
-  // console.log(auth.currentUser?.email);
-  // const str = useAuthState(auth);
-  // console.log(str[0]?.email);
-  // let userValid = !!str[0]?.email;
-  // let userValid = false;
-  // const auth = getAuth();
-
-  // auth.currentUser.getIdTokenResult();
-  // let userValid = false;
   const [userValid, setUserValid] = useState(false);
-  onAuthStateChanged(auth, (user) => {
+  const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
+
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       setUserValid(true);
     } else {
       setUserValid(false);
     }
   });
+
+  useEffect(() => {
+    const time = setTimeout(() => {
+      userValid && setCurrentTime(Math.floor(Date.now() / 1000));
+    }, 1500);
+
+    auth.currentUser?.getIdTokenResult().then((user) => {
+      currentTime >= Number(user.claims.auth_time) + 3600 && auth.signOut();
+    });
+    return function cleanup() {
+      clearInterval(time);
+    };
+  }, [currentTime, userValid]);
 
   return userValid ? (
     <Routes>
