@@ -1,16 +1,44 @@
 import { Title } from '@mantine/core';
 import styles from './Logo.module.scss';
-import { FC } from 'react';
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useHover } from '@mantine/hooks';
 
 const Logo: FC = () => {
+  const { hovered, ref } = useHover();
+  const intervalRef = useRef<number | NodeJS.Timer>(0);
+  const [degree, setDegree] = useState(0);
+  const animationDuration = 5; //in seconds
+
+  useEffect(() => {
+    if (hovered) {
+      const tempInterval = setInterval(() => {
+        setDegree((prevDegree) => {
+          const nextDegree = prevDegree + 1;
+          return nextDegree === 360 ? 0 : nextDegree;
+        });
+      }, (animationDuration * 1000) / 360);
+      intervalRef.current = tempInterval;
+    }
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [hovered, degree]);
+
   return (
-    <a className={`${styles.logo}`} href="/welcome" target="blank">
+    <a
+      ref={ref as unknown as MutableRefObject<HTMLAnchorElement>}
+      className={`hidden ${styles.logo}`}
+      href="/welcome"
+      target="blank"
+    >
       <svg
+        style={{ transform: `rotate(${degree}deg)` }}
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 50 50"
         width="50px"
         height="50px"
+        className={styles.svgLogo}
       >
         <circle style={{ fillRule: 'evenodd', clipRule: 'evenodd' }} cx={25} cy={25} r={4} />
         <circle

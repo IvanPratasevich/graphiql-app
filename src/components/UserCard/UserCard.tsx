@@ -25,7 +25,7 @@ const UserCard: FC<{ data: IUser }> = ({ data }) => {
           />
         </Card.Section>
 
-        <Flex mb="md" justify="space-between" mt="md" align="center">
+        <Flex mb="md" justify="space-between" mt="md" align="center" wrap="wrap" gap="1rem">
           <Text size="lg" weight={500}>
             {data.name}
           </Text>

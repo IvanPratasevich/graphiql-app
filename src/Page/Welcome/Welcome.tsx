@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Flex, Title, Text, Box, Spoiler } from '@mantine/core';
 import UserCards from '../../components/UserCards/UserCards';
 import styles from './Welcome.module.scss';
 
 const Welcome: FC = () => {
+  const [clicked, isClicked] = useState<boolean>(false);
+
   return (
     <main className={`${styles.main}`}>
       <div className="container">
@@ -14,32 +16,32 @@ const Welcome: FC = () => {
             gap="lg"
             justify="space-between"
             align="center"
-            direction="row"
             wrap="wrap"
+            className={styles.information}
           >
-            <Flex
-              style={{ alignSelf: 'flex-start' }}
-              gap="md"
-              justify="flex-start"
-              align="center"
-              direction="column"
-              wrap="wrap"
-            >
+            <Flex gap="md" align="center" direction="column" wrap="wrap">
               <Title align="center" order={2}>
                 GraphiQL
               </Title>
-
-              <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/eIQh02xuVw4?controls=0"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
+              {!clicked ? (
+                <img
+                  src="/src/assets/ytb_yellow.jpg"
+                  onClick={() => isClicked(true)}
+                  className={`${styles.video} ${styles.ytbImage}`}
+                  alt="YouTube Video"
+                />
+              ) : (
+                <iframe
+                  src="https://www.youtube.com/embed/eIQh02xuVw4?controls=0"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className={styles.video}
+                ></iframe>
+              )}
             </Flex>
-            <Box w={'50%'}>
+            <Box className={styles.description}>
               <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
                 <Text size="xl">
                   GraphiQL is a user-friendly IDE for testing GraphQL APIs. It provides a graphical
@@ -67,7 +69,13 @@ const Welcome: FC = () => {
               </Spoiler>
             </Box>
           </Flex>
-          <Flex w="100%" gap="xl" justify="space-between" align="center" direction="row">
+          <Flex
+            gap="xl"
+            justify="space-between"
+            align="center"
+            direction="row"
+            className={styles.authors}
+          >
             <UserCards />
           </Flex>
         </Flex>

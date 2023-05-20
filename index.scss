@@ -23,3 +23,25 @@ ul {
   max-width: 1357px;
   margin: 0 auto;
 }
+
+@media (max-width: 1400px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 729px) {
+  .hidden {
+    display: none;
+  }
+
+  .navigation_hidden {
+    display: none;
+  }
+}
+
+iframe,
+object,
+embed {
+  max-width: 100%;
+}
