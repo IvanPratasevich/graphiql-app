@@ -47,7 +47,7 @@ const Header: FC = () => {
             transitionProps={{ transition: 'fade', duration: 1600, timingFunction: 'linear' }}
           >
             <div
-              className={styles.drawer__container}
+              className={styles.modal__container}
               onClick={() => {
                 window.scrollTo({
                   top: 0,

@@ -37,14 +37,11 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
 
   const handleLanguage = () => {
     setLanguageLoading(true);
-    i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en');
-  };
-
-  useEffect(() => {
     setTimeout(() => {
       setLanguageLoading(false);
     }, 500);
-  }, [i18n.language]);
+    i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en');
+  };
 
   const navStyles = {
     burger: `navigation_hidden ${styles.navigation}`,
@@ -57,19 +54,17 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
 
   if (opened) {
     navStyles.navStyle = burgerOpened;
+  } else if (!hidden && isMobile) {
+    navStyles.navStyle = burger;
   } else {
-    if (!hidden && isMobile) {
-      navStyles.navStyle = burger;
-    } else {
-      navStyles.navStyle = desktop;
-    }
+    navStyles.navStyle = desktop;
   }
 
   return (
     <nav className={navStyles.navStyle}>
       {languageLoading &&
         createPortal(
-          <Modal opened={true} size="100%" onClose={(): void => {}}>
+          <Modal opened={true} fullScreen onClose={(): void => {}}>
             <Flex align="center" justify="center" style={{ height: '100vh' }}>
               <Loader color="cyan" size="xl" variant="bars" />
             </Flex>
