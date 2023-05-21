@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
 import Navigation from '../Navigation/Navigation';
-import { Burger, Drawer } from '@mantine/core';
+import { Burger, Drawer, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 const Header: FC = () => {
@@ -39,28 +39,27 @@ const Header: FC = () => {
             onClick={toggle}
             className={styles.header__burger}
           />
-          {opened && (
-            <Drawer
-              opened={opened}
-              onClose={close}
-              overlayProps={{ opacity: 0.5, blur: 4 }}
-              size="100%"
-            >
-              <div
-                className={styles.drawer__container}
-                onClick={() => {
-                  window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                  });
 
-                  close();
-                }}
-              >
-                <Navigation hidden={true} opened={opened} />
-              </div>
-            </Drawer>
-          )}
+          <Modal
+            opened={opened}
+            onClose={close}
+            fullScreen
+            transitionProps={{ transition: 'fade', duration: 1600, timingFunction: 'linear' }}
+          >
+            <div
+              className={styles.drawer__container}
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+
+                close();
+              }}
+            >
+              <Navigation hidden={true} opened={opened} />
+            </div>
+          </Modal>
         </div>
       </div>
     </header>

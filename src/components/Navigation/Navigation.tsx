@@ -1,17 +1,50 @@
 import styles from './Navigation.module.scss';
-import { Button, NavLink } from '@mantine/core';
+import {
+  Button,
+  Drawer,
+  Flex,
+  Loader,
+  Modal,
+  NavLink,
+  Switch,
+  useMantineTheme,
+} from '@mantine/core';
 import { NavLink as NavLinkReactRotuter } from 'react-router-dom';
-import { IconHome2, IconUser, IconKey, IconLogout, IconGraph } from '@tabler/icons-react';
+import {
+  IconHome2,
+  IconUser,
+  IconKey,
+  IconLogout,
+  IconGraph,
+  IconLanguage,
+} from '@tabler/icons-react';
 import { useLocation } from 'react-router';
 import { auth } from '../../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useMediaQuery } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) => {
+  const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
   const str = useAuthState(auth);
   const userValid = !!str[0]?.email;
   const isMobile = useMediaQuery('(max-width: 729px)');
+
+  const [languageLoading, setLanguageLoading] = useState<boolean>(false);
+
+  const handleLanguage = () => {
+    setLanguageLoading(true);
+    i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en');
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLanguageLoading(false);
+    }, 500);
+  }, [i18n.language]);
 
   const navStyles = {
     burger: `navigation_hidden ${styles.navigation}`,
@@ -34,9 +67,24 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
 
   return (
     <nav className={navStyles.navStyle}>
+      {languageLoading &&
+        createPortal(
+          <Modal opened={true} size="100%" onClose={(): void => {}}>
+            <Flex align="center" justify="center" style={{ height: '100vh' }}>
+              <Loader color="cyan" size="xl" variant="bars" />
+            </Flex>
+          </Modal>,
+          document.body
+        )}
+
+      <NavLink
+        label={t('current_lng').toUpperCase()}
+        icon={<IconLanguage size="1.5rem" stroke={1.5} />}
+        onClick={handleLanguage}
+      />
       <NavLinkReactRotuter to="/welcome">
         <NavLink
-          label="Welcome"
+          label={t('welcome')}
           active={pathname === '/welcome'!}
           icon={<IconHome2 size="1.5rem" stroke={1.5} />}
         />
@@ -45,7 +93,7 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
         <>
           <NavLinkReactRotuter to="/sign-in">
             <NavLink
-              label="Sign in"
+              label={t('sign_in')}
               active={pathname === '/sign-in'!}
               icon={<IconUser size="1.5rem" stroke={1.5} />}
             />
@@ -53,7 +101,7 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
 
           <NavLinkReactRotuter to="/sign-up">
             <NavLink
-              label="Sign up"
+              label={t('sign_up')}
               active={pathname === '/sign-up'!}
               icon={<IconKey size="1.5rem" stroke={1.5} />}
             />
@@ -63,7 +111,7 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
         <>
           <NavLinkReactRotuter to="/main">
             <NavLink
-              label="Main"
+              label={t('main')}
               active={pathname === '/main'!}
               icon={<IconGraph size="1.5rem" stroke={1.5} />}
             />
@@ -77,7 +125,7 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) =>
             }}
             leftIcon={<IconLogout size="1.5rem" stroke={1.5} />}
           >
-            Sign out
+            {t('sign_out')}
           </Button>
         </>
       )}
