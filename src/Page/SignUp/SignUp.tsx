@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
+import { windowInnerHeight } from '../../utils/window';
 
 const SignUp = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -31,9 +32,10 @@ const SignUp = () => {
         setLoading(false);
       });
   };
+  console.log(windowInnerHeight);
   return (
     <>
-      <Modal opened={opened} onClose={close} withCloseButton={false} title="Sign-up" yOffset={300}>
+      <Modal opened={opened} onClose={close} withCloseButton={false} title="Sign-up" yOffset={200}>
         {text}
       </Modal>
       {loading ? <LoaderWrapper /> : <Form title="Sign-up" handleClick={handelRegister} />}

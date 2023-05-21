@@ -9,3 +9,10 @@ export interface setOpen {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
 }
+export interface setOpenAdditionalEditor {
+  setOpenAdditionalEditor: Dispatch<SetStateAction<boolean>>;
+  openAdditionalEditor: boolean;
+}
+export interface openAdditionalEditor {
+  openAdditionalEditor: boolean;
+}

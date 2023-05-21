@@ -10,13 +10,18 @@ const Docs = lazy(() => import('../../components/Docs/Docs'));
 
 const Main = () => {
   const [open, setOpen] = useState(true);
+  const [openAdditionalEditor, setOpenAdditionalEditor] = useState(true);
+
   return (
     <div className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
       <DocsWrapper setOpen={setOpen} open={open} />
       <Suspense fallback={<LoaderWrapper />}>{!open ? <Docs /> : <div></div>}</Suspense>
       <div className={style.wrapperRequest}>
-        <EditorWrapper />
-        <AdditionalEditor></AdditionalEditor>
+        <EditorWrapper openAdditionalEditor={openAdditionalEditor} />
+        <AdditionalEditor
+          openAdditionalEditor={openAdditionalEditor}
+          setOpenAdditionalEditor={setOpenAdditionalEditor}
+        />
       </div>
       <div className={style.wrapperResponse} />
     </div>

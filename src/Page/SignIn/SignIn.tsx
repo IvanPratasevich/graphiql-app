@@ -34,10 +34,10 @@ const SignIn = () => {
   };
   return (
     <>
-      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={300}>
+      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={200}>
         {text}
       </Modal>
-      {loading ? <LoaderWrapper /> : <Form title="Sign-up" handleClick={handelLogin} />}
+      {loading ? <LoaderWrapper /> : <Form title="Sign-in" handleClick={handelLogin} />}
     </>
   );
 };

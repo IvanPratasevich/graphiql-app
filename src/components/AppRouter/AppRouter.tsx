@@ -25,7 +25,7 @@ function AppRouter() {
   useEffect(() => {
     const time = setTimeout(() => {
       userValid && setCurrentTime(Math.floor(Date.now() / 1000));
-    }, 1500);
+    }, 30000);
 
     auth.currentUser?.getIdTokenResult().then((user) => {
       currentTime >= Number(user.claims.auth_time) + 3600 && auth.signOut();
