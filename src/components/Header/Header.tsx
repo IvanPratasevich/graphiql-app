@@ -4,15 +4,29 @@ import styles from './Header.module.scss';
 import Navigation from '../Navigation/Navigation';
 import { Burger, Modal, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 const Header: FC = () => {
+  const location = useLocation();
+
+  const { pathname } = location;
+
   const [sticky, setSticky] = useState<boolean>(false);
+
+  const [languageChanged, setLanguageChanged] = useState<boolean>(false);
 
   const theme = useMantineTheme();
 
   const [opened, { toggle, close }] = useDisclosure(false);
 
   const handleScroll = (): void => (window.pageYOffset > 0 ? setSticky(true) : setSticky(false));
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    i18n.on('languageChanged', () => setLanguageChanged(true));
+  }, [i18n]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -56,12 +70,21 @@ const Header: FC = () => {
             <div
               className={styles.modal__container}
               onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
+                if (languageChanged) {
+                  setTimeout(() => {
+                    setLanguageChanged(false);
+                    close();
+                  }, 500);
+                } else if (pathname === '/welcome') {
+                  close();
+                } else {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  });
 
-                close();
+                  close();
+                }
               }}
             >
               <Navigation hidden={false} opened={opened} />
