@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import '../index.scss';
 import './firebase/firebase';
+import './services/localization';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -21,11 +22,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             }),
           },
 
-          Drawer: {
-            styles: (theme) => ({
+          Modal: {
+            styles: () => ({
               root: {
-                '.mantine-Drawer-header': { display: 'none' },
-                '.mantine-Drawer-body': { padding: '0px' },
+                '.mantine-Modal-header': { display: 'none' },
+                '.mantine-Modal-close': { display: 'none' },
+                '.mantine-Modal-body': { padding: '0px' },
               },
             }),
           },

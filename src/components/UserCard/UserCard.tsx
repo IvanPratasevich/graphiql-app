@@ -1,6 +1,7 @@
 import { Card, Badge, Button, Image, Text, Flex, Group } from '@mantine/core';
 import { IconBrandGithub } from '@tabler/icons-react';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IUser {
   id: number;
@@ -10,9 +11,11 @@ interface IUser {
   description: string;
   badges: string[];
   colors: string[];
+  github: string;
 }
 
 const UserCard: FC<{ data: IUser }> = ({ data }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Card padding="lg" shadow="md" withBorder>
@@ -51,7 +54,7 @@ const UserCard: FC<{ data: IUser }> = ({ data }) => {
           variant="outline"
           fullWidth
         >
-          {`${data.name} Github`}
+          {`${data.github}`}
         </Button>
       </Card>
     </>
