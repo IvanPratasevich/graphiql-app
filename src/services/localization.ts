@@ -17,6 +17,9 @@ const resources = {
       sergey: 'Сергей',
       invalid_email: 'Неверный адрес электронной почты',
       your_email: 'Ваш адрес электронной почты',
+      wrong_password: 'Bы ввели неверный пароль',
+      user_not_found: 'Пользователь не найден',
+      email_already_in_use: 'Электронная почта уже используется',
       users: [
         {
           id: 1,
@@ -76,6 +79,9 @@ const resources = {
       sergey: 'Sergey',
       invalid_email: 'Invalid email',
       your_email: 'Your email',
+      wrong_password: 'You entered the wrong password',
+      user_not_found: 'User not found',
+      email_already_in_use: 'Email already in use',
       users: [
         {
           id: 1,

@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
+import { useTranslation } from 'react-i18next';
 
 const SignIn = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handelLogin = (email: string, password: string) => {
@@ -22,9 +24,11 @@ const SignIn = () => {
       })
       .catch((error) => {
         if (error.code == 'auth/wrong-password') {
-          setText('wrong password');
+          const textLock = t('wrong_password');
+          setText(textLock);
         } else if (error.code == 'auth/user-not-found') {
-          setText('user not found');
+          const textLock = t('user_not_found');
+          setText(textLock);
         } else {
           setText(error.message);
         }
@@ -34,10 +38,10 @@ const SignIn = () => {
   };
   return (
     <>
-      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={300}>
-        {text}
+      <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={200}>
+        <div style={{ padding: 50 }}>{text}</div>
       </Modal>
-      {loading ? <LoaderWrapper /> : <Form title="Sign-up" handleClick={handelLogin} />}
+      {loading ? <LoaderWrapper /> : <Form title="Sign-in" handleClick={handelLogin} />}
     </>
   );
 };
