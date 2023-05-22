@@ -2,11 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
 import Navigation from '../Navigation/Navigation';
-import { Burger, Drawer, Modal } from '@mantine/core';
+import { Burger, Modal, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 const Header: FC = () => {
   const [sticky, setSticky] = useState<boolean>(false);
+
+  const theme = useMantineTheme();
 
   const [opened, { toggle, close }] = useDisclosure(false);
 
@@ -31,7 +33,7 @@ const Header: FC = () => {
           }
         >
           <Logo />
-          <Navigation hidden={false} opened={opened} />
+          <Navigation hidden={false} />
           <Burger
             size="lg"
             color="#ffff00"
@@ -44,7 +46,12 @@ const Header: FC = () => {
             opened={opened}
             onClose={close}
             fullScreen
-            transitionProps={{ transition: 'fade', duration: 1600, timingFunction: 'linear' }}
+            transitionProps={{ transition: 'fade', timingFunction: 'linear', duration: 800 }}
+            overlayProps={{
+              color: theme.colors.dark[8],
+              blur: 3,
+              opacity: 0.6,
+            }}
           >
             <div
               className={styles.modal__container}
@@ -57,7 +64,7 @@ const Header: FC = () => {
                 close();
               }}
             >
-              <Navigation hidden={true} opened={opened} />
+              <Navigation hidden={false} opened={opened} />
             </div>
           </Modal>
         </div>

@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-const Navigation = ({ hidden, opened }: { hidden: boolean; opened: boolean }) => {
+const Navigation = ({ hidden, opened }: { hidden: boolean; opened?: boolean }) => {
   const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
   const str = useAuthState(auth);
