@@ -42,10 +42,45 @@ const Logo: FC = () => {
     angle: 0,
   };
 
+  const thirdElectron: IPosition = {
+    x: 30.108,
+    y: 16.234,
+    radius: 2.5,
+    cx: 25,
+    cy: 24.593,
+    rx: 22,
+    ry: 8.593,
+    angle: 0,
+  };
+
+  // const fourthElectron: IPosition = {
+  //   x: 24.108,
+  //   y: 2.596,
+  //   radius: 2.5,
+  //   cx: 24.98,
+  //   cy: 25.014,
+  //   rx: 8.593,
+  //   ry: 22.534,
+  //   angle: 0,
+  // };
+
+  // const fifthElectron: IPosition = {
+  //   x: 30.504,
+  //   y: 24.986,
+  //   radius: 2.5,
+  //   cx: 24.97,
+  //   cy: 24.986,
+  //   rx: 22.534,
+  //   ry: 8.593,
+  //   angle: 0,
+  // };
+
   firstElectron.angle = -1 * Math.acos((firstElectron.x - firstElectron.cx) / firstElectron.rx);
   secondElectron.angle = -1 * Math.acos((secondElectron.x - secondElectron.cx) / secondElectron.rx);
+  thirdElectron.angle = -1 * Math.acos((thirdElectron.x - thirdElectron.cx) / thirdElectron.rx);
+  // fourthElectron.angle = -1 * Math.acos((fourthElectron.x - fourthElectron.cx) / fourthElectron.rx);
 
-  const [positions, setPositions] = useState([firstElectron, secondElectron]);
+  const [positions, setPositions] = useState([firstElectron, secondElectron, thirdElectron]);
 
   window.addEventListener('load', () => setPageLoaded(true));
 
@@ -78,8 +113,6 @@ const Logo: FC = () => {
       for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
         const animate = (): void => {
           const { rx, ry, cx, cy, angle } = positions[electronIdx];
-          const x22 = cx + rx * Math.cos(angle);
-          const y22 = cy + ry * Math.sin(angle);
           const speed = 0.05; // radian
           const newAngle = angle + speed; // radian
           const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
@@ -136,14 +169,36 @@ const Logo: FC = () => {
           rx="22.534"
           ry="8.593"
         />
-        <path
+
+        <ellipse
+          cx="25"
+          cy="24.593"
+          rx="22"
+          ry="8.593"
           style={{ fill: 'none', stroke: '#ffee08', strokeWidth: '2.019' }}
-          d="M47,24.593c0,4.743-9.858,8.593-22,8.593c-12.142,0-22-3.85-22-8.593C3,19.85,12.858,16,25,16C37.142,16,47,19.85,47,24.593z"
         />
+
         <circle
           fill="url(#electron_first)"
-          cx={positions[0].x}
-          cy={positions[0].y}
+          style={{
+            transform: `translate(${positions[0].x}px, ${positions[0].y}px)`,
+          }}
+          r={positions[0].radius}
+        ></circle>
+
+        {/* <circle
+          fill="url(#electron_fifth)"
+          style={{
+            transform: `translate(${positions[4].x}px, ${positions[4].y}px)`,
+          }}
+          r={positions[4].radius}
+        ></circle> */}
+
+        <circle
+          fill="url(#electron_third)"
+          style={{
+            transform: `matrix(0.5, -0.866, 0.866, 0.5, -9.153, 34.1177) translate(${positions[2].x}px, ${positions[2].y}px)`,
+          }}
           r={positions[0].radius}
         ></circle>
 
@@ -160,12 +215,20 @@ const Logo: FC = () => {
           ry="22.534"
         />
         <circle
-          transform="matrix(0.866 -0.5 0.5 0.866 -9.1606 15.8414)"
           fill="url(#electron_second)"
-          cx={positions[1].x}
-          cy={positions[1].y}
+          style={{
+            transform: `matrix(0.866, -0.5, 0.5, 0.866, -9.1606, 15.8414) translate(${positions[1].x}px, ${positions[1].y}px)`,
+          }}
           r={positions[1].radius}
         ></circle>
+
+        {/* <circle
+          fill="url(#electron_fourth)"
+          style={{
+            transform: `matrix(0.866, -0.5, 0.5, 0.866, -9.1606, 15.8414) translate(${positions[3].x}px, ${positions[3].y}px)`,
+          }}
+          r={positions[1].radius}
+        ></circle> */}
         <defs>
           <radialGradient id="electron_first" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
             <stop offset="0%" stopColor="#d71e49" />
@@ -176,6 +239,21 @@ const Logo: FC = () => {
             <stop offset="0%" stopColor="#42aaff" />
             <stop offset="100%" stopColor="#8b00ff" />
           </radialGradient>
+
+          <radialGradient id="electron_third" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="#9acd32" />
+            <stop offset="100%" stopColor="#32acd32" />
+          </radialGradient>
+
+          {/* <radialGradient id="electron_fourth" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="#000000" />
+            <stop offset="100%" stopColor="#ffffff" />
+          </radialGradient>
+
+          <radialGradient id="electron_fifth" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="#ff0000" />
+            <stop offset="100%" stopColor="#000000" />
+          </radialGradient> */}
         </defs>
       </svg>
       <Title order={1}>GraphiQL</Title>
