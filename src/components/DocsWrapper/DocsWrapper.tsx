@@ -3,7 +3,6 @@ import { IconClipboardData } from '@tabler/icons-react';
 import { setOpen } from '../../type/tuype';
 
 const DocsWrapper = ({ setOpen, open }: setOpen) => {
-
   return (
     <div>
       <ActionIcon
