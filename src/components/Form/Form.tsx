@@ -64,7 +64,10 @@ export function Form({ title, handleClick }: Form) {
             color="white"
             size="md"
             type="submit"
-            onClick={() => wrappeIsValid()}
+            onClick={(e) => {
+              e.preventDefault();
+              wrappeIsValid();
+            }}
             disabled={validationPassword}
           >
             {title}
