@@ -3,12 +3,24 @@ import styles from './Logo.module.scss';
 import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useHover } from '@mantine/hooks';
 
+interface IPosition {
+  x: number;
+  y: number;
+  radius: number;
+  cx: number;
+  cy: number;
+  rx: number;
+  ry: number;
+  angle: number;
+}
+
 const Logo: FC = () => {
   const { hovered, ref } = useHover();
   const intervalRef = useRef<number | NodeJS.Timer>(0);
   const [degree, setDegree] = useState(0);
   const [pageLoaded, setPageLoaded] = useState(false);
-  const firstElectron = {
+
+  const firstElectron: IPosition = {
     x: 37.5,
     y: 17.843,
     radius: 2.5,
@@ -19,9 +31,21 @@ const Logo: FC = () => {
     angle: 0,
   };
 
-  firstElectron.angle = -1 * Math.acos((firstElectron.x - firstElectron.cx) / firstElectron.rx);
+  const secondElectron: IPosition = {
+    x: 29.758,
+    y: 6.28,
+    radius: 2.5,
+    cx: 24.98,
+    cy: 25.014,
+    rx: 8.593,
+    ry: 22.534,
+    angle: 0,
+  };
 
-  const [positions, setPositions] = useState(firstElectron);
+  firstElectron.angle = -1 * Math.acos((firstElectron.x - firstElectron.cx) / firstElectron.rx);
+  secondElectron.angle = -1 * Math.acos((secondElectron.x - secondElectron.cx) / secondElectron.rx);
+
+  const [positions, setPositions] = useState([firstElectron, secondElectron]);
 
   window.addEventListener('load', () => setPageLoaded(true));
 
@@ -49,22 +73,30 @@ const Logo: FC = () => {
   // --
 
   useEffect(() => {
-    let requestId: number;
+    const requestIds: number[] = [];
     if (pageLoaded) {
-      const animate = (): void => {
-        const { rx, ry, cx, cy, angle } = positions;
-        const speed = 0.05; // radian
-        const newAngle = angle + speed; // radian
-        const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
-        const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
-        setPositions((prev) => {
-          return { ...prev, x, y, angle: newAngle };
-        });
-      };
-      requestId = requestAnimationFrame(animate);
-    }
+      for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
+        const animate = (): void => {
+          const { rx, ry, cx, cy, angle } = positions[electronIdx];
+          const x22 = cx + rx * Math.cos(angle);
+          const y22 = cy + ry * Math.sin(angle);
+          const speed = 0.05; // radian
+          const newAngle = angle + speed; // radian
+          const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
+          const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
+          setPositions((prev) =>
+            prev.map((electron, idx) =>
+              idx === electronIdx ? { ...electron, x, y, angle: newAngle } : electron
+            )
+          );
+        };
 
-    return () => cancelAnimationFrame(requestId ? requestId : 0);
+        requestIds.push(requestAnimationFrame(animate));
+      }
+    }
+    return () => {
+      requestIds.forEach((requestId: number) => cancelAnimationFrame(requestId ? requestId : 0));
+    };
   }, [positions, pageLoaded]);
 
   return (
@@ -110,22 +142,39 @@ const Logo: FC = () => {
         />
         <circle
           fill="url(#electron_first)"
-          cx={positions.x}
-          cy={positions.y}
-          r={positions.radius}
+          cx={positions[0].x}
+          cy={positions[0].y}
+          r={positions[0].radius}
         ></circle>
+
         <ellipse
           transform="matrix(0.866 -0.5 0.5 0.866 -9.1606 15.8414)"
-          style={{ fill: 'none', stroke: '#ffee08', strokeWidth: 2 }}
+          style={{
+            fill: 'none',
+            stroke: '#ffee08',
+            strokeWidth: 2,
+          }}
           cx="24.98"
           cy="25.014"
           rx="8.593"
           ry="22.534"
         />
+        <circle
+          transform="matrix(0.866 -0.5 0.5 0.866 -9.1606 15.8414)"
+          fill="url(#electron_second)"
+          cx={positions[1].x}
+          cy={positions[1].y}
+          r={positions[1].radius}
+        ></circle>
         <defs>
           <radialGradient id="electron_first" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
             <stop offset="0%" stopColor="#d71e49" />
             <stop offset="100%" stopColor="#ffff" />
+          </radialGradient>
+
+          <radialGradient id="electron_second" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="#42aaff" />
+            <stop offset="100%" stopColor="#8b00ff" />
           </radialGradient>
         </defs>
       </svg>
