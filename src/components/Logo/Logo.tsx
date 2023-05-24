@@ -113,7 +113,7 @@ const Logo: FC = () => {
       for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
         const animate = (): void => {
           const { rx, ry, cx, cy, angle } = positions[electronIdx];
-          const speed = 0.05; // radian
+          const speed = 0.03; // radian
           const newAngle = angle + speed; // radian
           const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
           const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
