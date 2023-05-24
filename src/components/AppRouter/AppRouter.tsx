@@ -14,15 +14,14 @@ function AppRouter() {
   const [userValid, setUserValid] = useState(false);
   const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      setUserValid(true);
-    } else {
-      setUserValid(false);
-    }
-  });
-
   useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserValid(true);
+      } else {
+        setUserValid(false);
+      }
+    });
     const time = setTimeout(() => {
       userValid && setCurrentTime(Math.floor(Date.now() / 1000));
     }, 1500);
