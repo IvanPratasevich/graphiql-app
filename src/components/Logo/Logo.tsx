@@ -1,7 +1,9 @@
 import { Title } from '@mantine/core';
 import styles from './Logo.module.scss';
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useHover } from '@mantine/hooks';
+import throttle from 'lodash.throttle';
+import { useLocation } from 'react-router';
 
 interface IPosition {
   x: number;
@@ -14,11 +16,14 @@ interface IPosition {
   angle: number;
 }
 
-const Logo: FC = () => {
+const Logo = (props: { location: string }) => {
+  const { location } = props;
   const { hovered, ref } = useHover();
   const intervalRef = useRef<number | NodeJS.Timer>(0);
   const [degree, setDegree] = useState(0);
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const pathLocation = useLocation();
 
   const firstElectron: IPosition = {
     x: 37.5,
@@ -82,7 +87,32 @@ const Logo: FC = () => {
 
   const [positions, setPositions] = useState([firstElectron, secondElectron, thirdElectron]);
 
-  window.addEventListener('load', () => setPageLoaded(true));
+  useEffect(() => {
+    // if (pathLocation.pathname === '/sign-in' || pathLocation.pathname === '/sign-up') {
+    //   setVisible(true);
+    // }
+
+    const isVisibleHandler = () => {
+      if (scrollY + innerHeight >= ref.current.offsetTop) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+
+    if (location === 'footer') {
+      window.addEventListener('scroll', throttle(isVisibleHandler, 100));
+    }
+
+    return () => {
+      window.removeEventListener('scroll', throttle(isVisibleHandler, 100));
+    };
+  }, [location, pathLocation.pathname, ref]);
+
+  useEffect(() => {
+    window.addEventListener('load', () => setPageLoaded(true));
+    return () => window.removeEventListener('load', () => setPageLoaded(true));
+  }, []);
 
   useEffect(() => {
     if (hovered) {
@@ -107,30 +137,32 @@ const Logo: FC = () => {
   // | y = b * sin(phi)   // phi - angle
   // --
 
+  const animate = useCallback((electronIdx: number) => {
+    setPositions((prev) =>
+      prev.map((electron, idx) => {
+        const { rx, ry, cx, cy, angle } = electron;
+        const speed = 0.03; // radian
+        const newAngle = angle + speed; // radian
+        const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
+        const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
+        return idx === electronIdx ? { ...electron, x, y, angle: newAngle } : electron;
+      })
+    );
+  }, []);
+
   useEffect(() => {
     const requestIds: number[] = [];
-    if (pageLoaded) {
+    if ((pageLoaded && location === 'header') || (pageLoaded && location === 'footer' && visible)) {
       for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
-        const animate = (): void => {
-          const { rx, ry, cx, cy, angle } = positions[electronIdx];
-          const speed = 0.03; // radian
-          const newAngle = angle + speed; // radian
-          const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
-          const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
-          setPositions((prev) =>
-            prev.map((electron, idx) =>
-              idx === electronIdx ? { ...electron, x, y, angle: newAngle } : electron
-            )
-          );
-        };
-
-        requestIds.push(requestAnimationFrame(animate));
+        const animateFn = () => animate(electronIdx);
+        const requestId = requestAnimationFrame(animateFn);
+        requestIds.push(requestId);
       }
     }
     return () => {
       requestIds.forEach((requestId: number) => cancelAnimationFrame(requestId ? requestId : 0));
     };
-  }, [positions, pageLoaded]);
+  }, [positions, pageLoaded, visible, location, animate]);
 
   return (
     <a
@@ -144,8 +176,8 @@ const Logo: FC = () => {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 50 50"
-        width="50px"
-        height="50px"
+        width="90px"
+        height="90px"
         className={styles.svgLogo}
       >
         <circle style={{ fillRule: 'evenodd', clipRule: 'evenodd' }} cx={25} cy={25} r={4} />
@@ -179,7 +211,7 @@ const Logo: FC = () => {
         />
 
         <circle
-          fill="url(#electron_first)"
+          fill={location === 'header' ? 'url(#electron_first)' : 'url(#electron_first_footer)'}
           style={{
             transform: `translate(${positions[0].x}px, ${positions[0].y}px)`,
           }}
@@ -195,7 +227,7 @@ const Logo: FC = () => {
         ></circle> */}
 
         <circle
-          fill="url(#electron_third)"
+          fill={location === 'header' ? 'url(#electron_third)' : 'url(#electron_third_footer)'}
           style={{
             transform: `matrix(0.5, -0.866, 0.866, 0.5, -9.153, 34.1177) translate(${positions[2].x}px, ${positions[2].y}px)`,
           }}
@@ -215,7 +247,7 @@ const Logo: FC = () => {
           ry="22.534"
         />
         <circle
-          fill="url(#electron_second)"
+          fill={location === 'header' ? 'url(#electron_second)' : 'url(#electron_second_footer)'}
           style={{
             transform: `matrix(0.866, -0.5, 0.5, 0.866, -9.1606, 15.8414) translate(${positions[1].x}px, ${positions[1].y}px)`,
           }}
@@ -230,20 +262,62 @@ const Logo: FC = () => {
           r={positions[1].radius}
         ></circle> */}
         <defs>
-          <radialGradient id="electron_first" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#d71e49" />
-            <stop offset="100%" stopColor="#ffff" />
-          </radialGradient>
+          {location === 'header' ? (
+            <>
+              <radialGradient id="electron_first" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stopColor="#d71e49" />
+                <stop offset="100%" stopColor="#ffff" />
+              </radialGradient>
 
-          <radialGradient id="electron_second" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#42aaff" />
-            <stop offset="100%" stopColor="#8b00ff" />
-          </radialGradient>
+              <radialGradient id="electron_second" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stopColor="#42aaff" />
+                <stop offset="100%" stopColor="#8b00ff" />
+              </radialGradient>
 
-          <radialGradient id="electron_third" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#9acd32" />
-            <stop offset="100%" stopColor="#32acd32" />
-          </radialGradient>
+              <radialGradient id="electron_third" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stopColor="#00ffff" />
+                <stop offset="100%" stopColor="#ffffff" />
+              </radialGradient>
+            </>
+          ) : (
+            <>
+              <radialGradient
+                id="electron_first_footer"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="50%"
+                fy="50%"
+              >
+                <stop offset="0%" stopColor="#ff4d00" />
+                <stop offset="100%" stopColor="#ffb200" />
+              </radialGradient>
+
+              <radialGradient
+                id="electron_second_footer"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="50%"
+                fy="50%"
+              >
+                <stop offset="0%" stopColor="#00cc00" />
+                <stop offset="100%" stopColor="#00ff99" />
+              </radialGradient>
+
+              <radialGradient
+                id="electron_third_footer"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="50%"
+                fy="50%"
+              >
+                <stop offset="0%" stopColor="#ffff" />
+                <stop offset="100%" stopColor="#dc143c" />
+              </radialGradient>
+            </>
+          )}
 
           {/* <radialGradient id="electron_fourth" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
             <stop offset="0%" stopColor="#000000" />

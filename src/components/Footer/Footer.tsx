@@ -7,10 +7,11 @@ import { useTranslation } from 'react-i18next';
 
 const Footer: FC = () => {
   const { t } = useTranslation();
+
   return (
     <footer className={'footer'}>
       <div className={`${styles.footer__container}`}>
-        <Logo />
+        <Logo location="footer" />
         <FooterLogo />
         <Avatar.Group spacing="sm">
           <Avatar
