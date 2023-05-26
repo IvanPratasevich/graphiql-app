@@ -46,7 +46,7 @@ const Header: FC = () => {
               : `${styles.header__wrapper}`
           }
         >
-          <Logo />
+          <Logo location="header" />
           <Navigation hidden={false} />
           <Burger
             size="lg"

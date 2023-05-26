@@ -31,7 +31,7 @@ const Navigation = ({ hidden, opened }: { hidden: boolean; opened?: boolean }) =
   const { pathname } = useLocation();
   const str = useAuthState(auth);
   const userValid = !!str[0]?.email;
-  const isMobile = useMediaQuery('(max-width: 729px)');
+  const isMobile = useMediaQuery('(max-width: 860px)');
 
   const [languageLoading, setLanguageLoading] = useState<boolean>(false);
 
