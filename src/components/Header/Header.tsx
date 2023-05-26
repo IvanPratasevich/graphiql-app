@@ -2,15 +2,31 @@ import { FC, useEffect, useState } from 'react';
 import Logo from '../Logo/Logo';
 import styles from './Header.module.scss';
 import Navigation from '../Navigation/Navigation';
-import { Burger, Drawer } from '@mantine/core';
+import { Burger, Modal, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 
 const Header: FC = () => {
+  const location = useLocation();
+
+  const { pathname } = location;
+
   const [sticky, setSticky] = useState<boolean>(false);
+
+  const [languageChanged, setLanguageChanged] = useState<boolean>(false);
+
+  const theme = useMantineTheme();
 
   const [opened, { toggle, close }] = useDisclosure(false);
 
   const handleScroll = (): void => (window.pageYOffset > 0 ? setSticky(true) : setSticky(false));
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    i18n.on('languageChanged', () => setLanguageChanged(true));
+  }, [i18n]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -31,7 +47,7 @@ const Header: FC = () => {
           }
         >
           <Logo />
-          <Navigation hidden={false} opened={opened} />
+          <Navigation hidden={false} />
           <Burger
             size="lg"
             color="#ffff00"
@@ -39,28 +55,41 @@ const Header: FC = () => {
             onClick={toggle}
             className={styles.header__burger}
           />
-          {opened && (
-            <Drawer
-              opened={opened}
-              onClose={close}
-              overlayProps={{ opacity: 0.5, blur: 4 }}
-              size="100%"
-            >
-              <div
-                className={styles.drawer__container}
-                onClick={() => {
+
+          <Modal
+            opened={opened}
+            onClose={close}
+            fullScreen
+            transitionProps={{ transition: 'fade', timingFunction: 'linear', duration: 800 }}
+            overlayProps={{
+              color: theme.colors.dark[8],
+              blur: 3,
+              opacity: 0.6,
+            }}
+          >
+            <div
+              className={styles.modal__container}
+              onClick={() => {
+                if (languageChanged) {
+                  setTimeout(() => {
+                    setLanguageChanged(false);
+                    close();
+                  }, 500);
+                } else if (pathname === '/welcome') {
+                  close();
+                } else {
                   window.scrollTo({
                     top: 0,
                     behavior: 'smooth',
                   });
 
                   close();
-                }}
-              >
-                <Navigation hidden={true} opened={opened} />
-              </div>
-            </Drawer>
-          )}
+                }
+              }}
+            >
+              <Navigation hidden={false} opened={opened} />
+            </div>
+          </Modal>
         </div>
       </div>
     </header>

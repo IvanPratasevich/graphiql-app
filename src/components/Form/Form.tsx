@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { PasswordIsValidated } from '../Password/Password';
 import styles from './Form.module.scss';
 import { windowInnerHeight } from '../../utils/window';
+import { useTranslation } from 'react-i18next';
 
 interface Form {
   title: string;
   handleClick: (email: string, password: string) => void;
 }
 export function Form({ title, handleClick }: Form) {
+  const { t } = useTranslation();
   const [state, setState] = useSetState({});
 
   const [valuePassword, setValuePassword] = useState('');
@@ -22,7 +24,7 @@ export function Form({ title, handleClick }: Form) {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : t('invalid_email')),
     },
   });
 
@@ -44,8 +46,8 @@ export function Form({ title, handleClick }: Form) {
         })}
       >
         <TextInput
-          label="Your email"
-          placeholder="Your email"
+          label={t('your_email')}
+          placeholder={t('your_email')!}
           withAsterisk
           mt="md"
           {...form.getInputProps('email')}
@@ -62,7 +64,10 @@ export function Form({ title, handleClick }: Form) {
             color="white"
             size="md"
             type="submit"
-            onClick={() => wrappeIsValid()}
+            onClick={(e) => {
+              e.preventDefault();
+              wrappeIsValid();
+            }}
             disabled={validationPassword}
           >
             {title}

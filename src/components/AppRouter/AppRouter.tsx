@@ -6,7 +6,7 @@ import 'firebase/compat/firestore';
 import { auth } from '../../firebase/firebase';
 
 import { privateRoutes, publicRoutes } from '../../../router';
-import { SIGNUP_ROUTE, MAIN_ROUTE } from '../../utils/consts';
+import { SIGNIN_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 
 import { useEffect, useState } from 'react';
 
@@ -14,15 +14,14 @@ function AppRouter() {
   const [userValid, setUserValid] = useState(false);
   const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      setUserValid(true);
-    } else {
-      setUserValid(false);
-    }
-  });
-
   useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserValid(true);
+      } else {
+        setUserValid(false);
+      }
+    });
     const time = setTimeout(() => {
       userValid && setCurrentTime(Math.floor(Date.now() / 1000));
     }, 1500);
@@ -47,7 +46,7 @@ function AppRouter() {
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} />
       ))}
-      <Route path="*" element={<Navigate to={SIGNUP_ROUTE} />} />
+      <Route path="*" element={<Navigate to={SIGNIN_ROUTE} />} />
     </Routes>
   );
 }
