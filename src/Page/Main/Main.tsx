@@ -10,20 +10,11 @@ import MainDocs from '../../components/Docs/MainDocs/Docs';
 import {
   buildClientSchema,
   getIntrospectionQuery,
-<<<<<<< HEAD
-  GraphQLSchemaConfig,
-=======
->>>>>>> origin/develop
   IntrospectionQuery,
   IntrospectionSchema,
   IntrospectionType,
 } from 'graphql';
-<<<<<<< HEAD
-import { GraphQLSchema } from 'graphql';
-import { Data, Schema } from '../../type/shemas';
-=======
 import { Schema } from '../../type/schemas';
->>>>>>> origin/develop
 const Docs = lazy(() => import('../../components/Docs/Docs'));
 
 const Main = () => {

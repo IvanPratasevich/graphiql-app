@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import style from './docs.module.scss';
-const MainDocs = (props: { schemas; setCurrentSchema; previousSchema; setPreviousSchema }) => {
-  const { schemas, setCurrentSchema, setPreviousSchema } = props;
-  const handleClick = (type: any): void => {
-=======
 import { IntrospectionSchema, IntrospectionType } from 'graphql';
 import style from './docs.module.scss';
 import { Schema } from '../../../type/schemas';
@@ -16,7 +10,6 @@ const MainDocs = (props: {
 }) => {
   const { schemas, setCurrentSchema, setPreviousSchema } = props;
   const handleClick = (type: IntrospectionType): void => {
->>>>>>> origin/develop
     if (type) {
       setCurrentSchema(type);
       setPreviousSchema(['DOCS']);
@@ -30,11 +23,7 @@ const MainDocs = (props: {
       <div> Docs</div>
       <div> A GraphQL schema provides a root type for each kind of operation.</div>
       <div>Root Types</div>
-<<<<<<< HEAD
-      <div>query: {schemas.queryType.name}</div>
-=======
       <div>query: {schemas?.queryType.name}</div>
->>>>>>> origin/develop
       <div>All Schema Types</div>
       {schemas &&
         schemas.types.map((type, idx) => (
