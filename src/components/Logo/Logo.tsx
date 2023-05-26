@@ -2,7 +2,7 @@ import { Title } from '@mantine/core';
 import styles from './Logo.module.scss';
 import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useHover } from '@mantine/hooks';
-import throttle from 'lodash.throttle';
+// import throttle from 'lodash.throttle';
 import { useLocation } from 'react-router';
 
 interface IPosition {
@@ -23,7 +23,7 @@ const Logo = (props: { location: string }) => {
   const [degree, setDegree] = useState(0);
   const [pageLoaded, setPageLoaded] = useState(false);
   const [visible, setVisible] = useState(false);
-  const pathLocation = useLocation();
+  // const pathLocation = useLocation();
 
   const firstElectron: IPosition = {
     x: 37.5,
@@ -44,12 +44,12 @@ const Logo = (props: { location: string }) => {
     cy: 25.014,
     rx: 8.593,
     ry: 22.534,
-    angle: 0,
+    angle: 100,
   };
 
   const thirdElectron: IPosition = {
-    x: 30.108,
-    y: 16.234,
+    x: 3.0159,
+    y: 24.92,
     radius: 2.5,
     cx: 25,
     cy: 24.593,
@@ -87,27 +87,27 @@ const Logo = (props: { location: string }) => {
 
   const [positions, setPositions] = useState([firstElectron, secondElectron, thirdElectron]);
 
-  useEffect(() => {
-    // if (pathLocation.pathname === '/sign-in' || pathLocation.pathname === '/sign-up') {
-    //   setVisible(true);
-    // }
+  // useEffect(() => {
+  // if (pathLocation.pathname === '/sign-in' || pathLocation.pathname === '/sign-up') {
+  //   setVisible(true);
+  // }
 
-    const isVisibleHandler = () => {
-      if (scrollY + innerHeight >= ref.current.offsetTop) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-    };
+  //   const isVisibleHandler = () => {
+  //     if (scrollY + innerHeight >= ref.current.offsetTop) {
+  //       setVisible(true);
+  //     } else {
+  //       setVisible(false);
+  //     }
+  //   };
 
-    if (location === 'footer') {
-      window.addEventListener('scroll', throttle(isVisibleHandler, 100));
-    }
+  //   if (location === 'footer') {
+  //     window.addEventListener('scroll', throttle(isVisibleHandler, 100));
+  //   }
 
-    return () => {
-      window.removeEventListener('scroll', throttle(isVisibleHandler, 100));
-    };
-  }, [location, pathLocation.pathname, ref]);
+  //   return () => {
+  //     window.removeEventListener('scroll', throttle(isVisibleHandler, 100));
+  //   };
+  // }, [location, pathLocation.pathname, ref]);
 
   useEffect(() => {
     window.addEventListener('load', () => setPageLoaded(true));
@@ -116,13 +116,12 @@ const Logo = (props: { location: string }) => {
 
   useEffect(() => {
     if (hovered) {
-      const animationDuration = 5; //in seconds
-      const tempInterval = setInterval(() => {
+      const tempInterval = requestAnimationFrame(() => {
         setDegree((prevDegree) => {
           const nextDegree = prevDegree + 1;
           return nextDegree === 360 ? 0 : nextDegree;
         });
-      }, (animationDuration * 1000) / 360);
+      });
       intervalRef.current = tempInterval;
     }
     return () => {
@@ -152,7 +151,8 @@ const Logo = (props: { location: string }) => {
 
   useEffect(() => {
     const requestIds: number[] = [];
-    if ((pageLoaded && location === 'header') || (pageLoaded && location === 'footer' && visible)) {
+    // ((pageLoaded && location === 'header') || (pageLoaded && location === 'footer' && visible))
+    if (hovered) {
       for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
         const animateFn = () => animate(electronIdx);
         const requestId = requestAnimationFrame(animateFn);
@@ -162,7 +162,7 @@ const Logo = (props: { location: string }) => {
     return () => {
       requestIds.forEach((requestId: number) => cancelAnimationFrame(requestId ? requestId : 0));
     };
-  }, [positions, pageLoaded, visible, location, animate]);
+  }, [hovered, positions, pageLoaded, animate]);
 
   return (
     <a
