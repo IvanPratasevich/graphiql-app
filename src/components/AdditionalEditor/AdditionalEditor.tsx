@@ -2,13 +2,17 @@ import { Button, ActionIcon } from '@mantine/core';
 import style from './additionalEditor.module.scss';
 import { setOpenAdditionalEditor } from '../../type/tuype';
 import { IconArrowsDownUp } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hook/redux';
+import { headersSlice } from '../../toolkitRedux/additionalHeaders';
 
 export const AdditionalEditor = ({
   openAdditionalEditor,
   setOpenAdditionalEditor,
 }: setOpenAdditionalEditor) => {
-  const [changeVariablesHeaders, setChangeVariablesHeaders] = useState(true);
+  const { headers } = useAppSelector((state) => state.headersSlice);
+  const { changeHeaders } = headersSlice.actions;
+  const dispatch = useAppDispatch();
+
   return (
     <div
       className={
@@ -23,9 +27,9 @@ export const AdditionalEditor = ({
             color="yellow"
             size="sm"
             onClick={() => {
-              setChangeVariablesHeaders(!changeVariablesHeaders);
+              dispatch(changeHeaders(!headers));
             }}
-            disabled={!changeVariablesHeaders}
+            disabled={!headers}
           >
             Variables
           </Button>
@@ -36,9 +40,9 @@ export const AdditionalEditor = ({
             color="yellow"
             size="sm"
             onClick={() => {
-              setChangeVariablesHeaders(!changeVariablesHeaders);
+              dispatch(changeHeaders(!headers));
             }}
-            disabled={changeVariablesHeaders}
+            disabled={headers}
           >
             Headers
           </Button>
