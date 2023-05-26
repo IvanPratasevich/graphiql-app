@@ -1,6 +1,6 @@
 import { IntrospectionSchema, IntrospectionType } from 'graphql';
 import style from './docs.module.scss';
-import { Schema } from '../../type/shemas';
+import { Schema } from '../../type/schemas';
 import { Dispatch, SetStateAction } from 'react';
 
 export enum TypeSchemaEnum {
