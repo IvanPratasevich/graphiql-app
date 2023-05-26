@@ -14,8 +14,7 @@ import {
   IntrospectionSchema,
   IntrospectionType,
 } from 'graphql';
-import { GraphQLSchema } from 'graphql';
-import { Data, Schema } from '../../type/shemas';
+import { Schema } from '../../type/schemas';
 const Docs = lazy(() => import('../../components/Docs/Docs'));
 
 const Main = () => {
