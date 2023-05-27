@@ -21,7 +21,7 @@ const EditorWrapper = ({ openAdditionalEditor }: openAdditionalEditor) => {
         openAdditionalEditor ? style.wrapperEditor : `${style.wrapperEditor} ${style.grow}`
       }
     >
-      <Editor height={heightValue} />
+      <Editor height={heightValue} openAdditionalEditor={openAdditionalEditor} />
       <div>
         <ActionIcon color="blue" size="2rem">
           <IconCircleCaretRight size="2rem" />
