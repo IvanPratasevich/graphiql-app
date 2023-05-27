@@ -1,20 +1,32 @@
-.wrapperVariables{
+.wrapperVariables {
   display: grid;
-  grid-template-rows: 2rem 1fr ; 
+  grid-template-rows: 2rem 1fr;
   padding: 10px;
-  height: calc(50vh - 160px) ;
+  height: calc(50vh - 160px);
   border: 1px solid rgb(60, 60, 247);
 }
 
-.variables{
+.variables {
   background-color: rgba(83, 83, 248, 0.114);
 }
 
-.wrapperButtons{
+.wrapperButtons {
   display: flex;
   justify-content: space-between;
 }
 
-.hidden{
+.hidden {
   height: auto;
+}
+
+.editor_hidden {
+  display: none;
+}
+
+.editor_hidden {
+  display: none;
+}
+
+.additionalEditor {
+  display: grid;
 }

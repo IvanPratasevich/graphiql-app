@@ -1,5 +1,5 @@
 import style from './main.module.scss';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import DocsWrapper from '../../components/DocsWrapper/DocsWrapper';
 import EditorWrapper from '../../components/EditorWrapper/EditorWrapper';
 import { lazy } from 'react';
@@ -15,6 +15,7 @@ import {
   IntrospectionType,
 } from 'graphql';
 import { Schema } from '../../type/schemas';
+import Editor from '../../components/Editor/Editor';
 const Docs = lazy(() => import('../../components/Docs/Docs'));
 
 const Main = () => {
@@ -23,6 +24,7 @@ const Main = () => {
   const [schemas, setSchemas] = useState<IntrospectionSchema | null>(null);
   const [currentSchema, setCurrentSchema] = useState<Schema | IntrospectionType | null>(null);
   const [previousSchema, setPreviousSchema] = useState<string[]>([]);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function responseShema() {
@@ -40,7 +42,7 @@ const Main = () => {
     console.log(previousSchema);
   }, [previousSchema]);
   return (
-    <div className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
+    <div ref={mainRef} className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
       <DocsWrapper setOpen={setOpen} open={open} />
       <Suspense fallback={<LoaderWrapper />}>
         {open && <div></div>}
@@ -69,7 +71,9 @@ const Main = () => {
           setOpenAdditionalEditor={setOpenAdditionalEditor}
         />
       </div>
-      <div className={style.wrapperResponse} />
+      <div className={style.wrapperResponse}>
+        <Editor parentContainerRef={mainRef} openAdditionalEditor={openAdditionalEditor} />
+      </div>
     </div>
   );
 };
