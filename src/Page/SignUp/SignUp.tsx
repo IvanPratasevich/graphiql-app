@@ -39,7 +39,7 @@ const SignUp = () => {
       <Modal opened={opened} onClose={close} size="auto" title="Sign-up" yOffset={200}>
         <div style={{ padding: 50 }}>{text}</div>
       </Modal>
-      {loading ? <LoaderWrapper /> : <Form title="Sign-up" handleClick={handelRegister} />}
+      {loading ? <LoaderWrapper /> : <Form title={t('sign_up')} handleClick={handelRegister} />}
     </>
   );
 };

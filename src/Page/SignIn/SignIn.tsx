@@ -41,7 +41,7 @@ const SignIn = () => {
       <Modal opened={opened} onClose={close} size="auto" title="Sign-in" yOffset={200}>
         <div style={{ padding: 50 }}>{text}</div>
       </Modal>
-      {loading ? <LoaderWrapper /> : <Form title="Sign-in" handleClick={handelLogin} />}
+      {loading ? <LoaderWrapper /> : <Form title={t('sign_in')} handleClick={handelLogin} />}
     </>
   );
 };
