@@ -34,7 +34,7 @@ const Welcome: FC = () => {
                 />
               ) : (
                 <iframe
-                  src="https://www.youtube.com/embed/eIQh02xuVw4?controls=0"
+                  src="https://www.youtube.com/embed/voXuPwroEg8"
                   title={t('ytb_video')!}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
