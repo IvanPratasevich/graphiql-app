@@ -38,9 +38,7 @@ const Main = () => {
     responseShema();
   }, []);
 
-  useEffect(() => {
-    console.log(previousSchema);
-  }, [previousSchema]);
+  useEffect(() => {}, [previousSchema]);
   return (
     <div ref={mainRef} className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
       <DocsWrapper setOpen={setOpen} open={open} />

@@ -106,7 +106,7 @@ const Editor = (props: {
             basicSetup={{}}
             onChange={(code) => dispatch(changeHeadersQuery(code))}
             value={headers.query}
-            maxHeight={`${heightValue! - 20}px`}
+            maxHeight={`${heightValue! - 60}px`}
             height={'100%'}
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}
@@ -121,7 +121,7 @@ const Editor = (props: {
             basicSetup={{}}
             onChange={(code) => dispatch(changeVariablesQuery(code))}
             value={variables.query}
-            maxHeight={`${heightValue! - 20}px`}
+            maxHeight={`${heightValue! - 60}px`}
             height={'100%'}
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}
@@ -138,7 +138,7 @@ const Editor = (props: {
             }}
             onChange={(code) => dispatch(changeVariablesQuery(code))}
             value={response.query}
-            maxHeight={`${heightValue! - 20}px`}
+            maxHeight={`${heightValue! - 165}px`}
             height={'100%'}
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}

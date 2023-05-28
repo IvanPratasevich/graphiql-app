@@ -6,12 +6,12 @@ import 'firebase/compat/firestore';
 import { auth } from '../../firebase/firebase';
 
 import { privateRoutes, publicRoutes } from '../../../router';
-import { SIGNIN_ROUTE, MAIN_ROUTE } from '../../utils/consts';
+import { MAIN_ROUTE, WELCOME_ROUTE } from '../../utils/consts';
 
 import { useEffect, useState } from 'react';
 
 function AppRouter() {
-  const [userValid, setUserValid] = useState(false);
+  const [userValid, setUserValid] = useState(true);
   const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function AppRouter() {
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} />
       ))}
-      <Route path="*" element={<Navigate to={SIGNIN_ROUTE} />} />
+      <Route path="*" element={<Navigate to={WELCOME_ROUTE} />} />
     </Routes>
   );
 }
