@@ -69,7 +69,7 @@ const Editor = (props: {
             ${main.query}
           `;
 
-          const response = await fetch('https://ip-api.com/json', {
+          const response = await fetch('https://rickandmortyapi.com/graphql', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
