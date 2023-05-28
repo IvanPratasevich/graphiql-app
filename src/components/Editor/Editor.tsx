@@ -1,14 +1,16 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
-import { json, jsonLanguage } from '@codemirror/lang-json';
+import { json } from '@codemirror/lang-json';
 import { tokyoNightStorm } from '@uiw/codemirror-theme-tokyo-night-storm';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
-import request, { gql } from 'graphql-request';
-import { Flex, Loader } from '@mantine/core';
+import { gql } from 'graphql-request';
+import { Modal } from '@mantine/core';
 import isJSON from '@stdlib/assert-is-json';
+import { useDisclosure } from '@mantine/hooks';
+import { Text } from '@mantine/core';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
@@ -28,6 +30,8 @@ const Editor = (props: {
   const dispatch = useAppDispatch();
 
   const { openAdditionalEditor, parentContainerRef, purpose } = props;
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const [heightValue, setHeight] = useState<number>();
 
@@ -61,15 +65,11 @@ const Editor = (props: {
             'Check the correctness of the entered data in the Headers section'
           );
 
-          console.log(headersJson);
-
-          console.log(variablesJson, headersJson);
-
           const document = gql`
             ${main.query}
           `;
 
-          const response = await fetch('https://rickandmortyapi.com/graphql', {
+          const response = await fetch('https://ip-api.com/json', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -81,13 +81,20 @@ const Editor = (props: {
             }),
           });
 
-          const data = await response.json();
+          if (!response.ok && response.status !== 400) {
+            throw new Error('API error');
+          }
 
+          const data = await response.json();
           dispatch(changeResponse(JSON.stringify(data, null, '\t')));
           dispatch(changeMakeRequest(false));
         } catch (err) {
-          console.log(err);
           dispatch(changeMakeRequest(false));
+
+          if ((err as Error).message.includes('API error')) {
+            open();
+            return;
+          }
 
           if ((err as Error).message.includes('Check the correctness of the entered data')) {
             dispatch(changeResponse((err as Error).message));
@@ -95,13 +102,12 @@ const Editor = (props: {
           }
 
           const errJson = (err as Error).message.slice((err as Error).message.indexOf(`{`));
-
           dispatch(changeResponse(JSON.stringify(JSON.parse(errJson), null, '\t')));
         }
       }
       getData();
     }
-  }, [changeMakeRequest, changeResponse, dispatch, headers, main, makeRequest, variables]);
+  }, [changeMakeRequest, changeResponse, dispatch, headers, main, makeRequest, open, variables]);
 
   useEffect(() => {
     if (openAdditionalEditor || openAdditionalEditor) {
@@ -159,6 +165,23 @@ const Editor = (props: {
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}
           />
+
+          <Modal opened={opened} onClose={close} size="md" title="API Error" centered>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 50,
+              }}
+            >
+              <div className="apiError" style={{ color: 'red' }}>
+                <Text fz="lg" fw={700}>
+                  {'Error from the API Side!'}
+                </Text>
+              </div>
+            </div>
+          </Modal>
         </>
       );
 
