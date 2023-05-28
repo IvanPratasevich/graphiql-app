@@ -22,7 +22,7 @@ export function Form({ title, handleClick }: Form) {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : t('invalid_email')),
+      email: (value) => (/^\S+@\S+$/.test(value.trim()) ? null : t('invalid_email')),
     },
   });
 

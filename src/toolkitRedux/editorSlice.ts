@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { GraphQLSchema, buildSchema } from 'graphql';
+import { GraphQLSchema } from 'graphql';
 
 interface IInitialState {
   main: {

@@ -26,6 +26,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@tabler/icons-react": "^2.17.0",
     "@types/react-redux": "^7.1.25",
+    "cm6-graphql": "^0.0.8",
     "embla-carousel-react": "^8.0.0-rc02",
     "firebase": "^9.21.0",
     "graphql": "^16.6.0",

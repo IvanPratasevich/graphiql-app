@@ -6,13 +6,13 @@ import { tokyoNightStorm } from '@uiw/codemirror-theme-tokyo-night-storm';
 import { RefObject, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
-import { GraphQLClient, gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { Modal } from '@mantine/core';
 import isJSON from '@stdlib/assert-is-json';
 import { useDisclosure } from '@mantine/hooks';
 import { Text } from '@mantine/core';
 import { graphql } from 'cm6-graphql';
-import { GraphQLSchema, GraphQLSchemaConfig } from 'graphql';
+import { GraphQLSchema } from 'graphql';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
@@ -42,12 +42,8 @@ const Editor = (props: {
       async function getData() {
         try {
           const parseJSON = (str: string, errName: string) => {
-            if (str.split('').every((symbol) => symbol === ' ')) {
-              return '';
-            }
-
             try {
-              if (!isJSON(str)) {
+              if (!isJSON(str.trim())) {
                 throw new Error(errName);
               }
 
@@ -109,19 +105,27 @@ const Editor = (props: {
       }
       getData();
     }
-  }, [changeMakeRequest, changeResponse, dispatch, headers, main, makeRequest, open, variables]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [makeRequest]);
 
   useEffect(() => {
-    if (openAdditionalEditor || openAdditionalEditor) {
+    if (parentContainerRef) {
       setHeight(parentContainerRef!.current!.clientHeight);
     }
 
-    window.addEventListener('resize', () => {
-      setHeight(parentContainerRef!.current!.clientHeight);
-    });
+    const handleResize = () => {
+      if (parentContainerRef) {
+        setHeight(parentContainerRef!.current!.clientHeight);
+      }
+    };
 
-    setHeight(parentContainerRef!.current!.clientHeight);
-  }, [parentContainerRef, openAdditionalEditor, heightValue]);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openAdditionalEditor]);
 
   switch (purpose) {
     case 'request':
@@ -208,7 +212,7 @@ const Editor = (props: {
             }}
             onChange={(code) => dispatch(changeVariablesQuery(code))}
             value={response.query}
-            maxHeight={`${heightValue! - 165}px`}
+            maxHeight={`445px`}
             height={'100%'}
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}
@@ -222,7 +226,7 @@ const Editor = (props: {
         <>
           <CodeMirror
             basicSetup={{}}
-            value="console.log('hello world!');"
+            value="let a = 5;"
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}
             theme={tokyoNightStorm}

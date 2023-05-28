@@ -3,8 +3,7 @@
   max-width: 1350px;
   display: grid;
   grid-template-columns: 1.7rem 1px 1fr 1fr;
-  height: calc(100vh - 160px);
-  padding-top: 140px;
+  padding-top: 160px;
   gap: 10px;
 }
 
@@ -12,23 +11,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.wrapperRedactor,
-.wrapperVariables {
-  padding: 10px;
-  height: calc(50vh - 160px);
-  border: 1px solid rgb(60, 60, 247);
-}
-
-.wrapperRedactor {
-  display: grid;
-  grid-template-columns: 1fr 1.7rem;
-}
-
-.wrapperVariables {
-  display: grid;
-  grid-template-rows: 2rem 1fr;
+  gap: 10px;
 }
 
 .redactor {
@@ -60,5 +43,8 @@
   }
   .active {
     grid-template-columns: 1fr;
+  }
+  .wrapperRequest {
+    gap: 10px;
   }
 }

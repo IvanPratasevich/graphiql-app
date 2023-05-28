@@ -39,16 +39,27 @@ const Docs = (props: {
   };
   return (
     <div className={style.docs}>
-      <div
+      <span
         style={{
           color: 'red',
           cursor: 'pointer',
         }}
         onClick={() => goBack()}
       >
-        to {previous}
-      </div>
-      {isScalarType && <div>{currentSchema.description}</div>}
+        {`to ${previous}`}
+      </span>
+      {isScalarType && (
+        <>
+          <div
+            style={{
+              color: 'green',
+            }}
+          >
+            {currentSchema.name}
+          </div>
+          <div>{currentSchema.description}</div>
+        </>
+      )}
       {!isScalarType && (
         <div>
           <div>{currentSchema.name}</div>
