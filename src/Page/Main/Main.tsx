@@ -1,12 +1,11 @@
 import style from './main.module.scss';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import DocsWrapper from '../../components/DocsWrapper/DocsWrapper';
 import EditorWrapper from '../../components/EditorWrapper/EditorWrapper';
 import { lazy } from 'react';
 import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
 import { AdditionalEditor } from '../../components/AdditionalEditor/AdditionalEditor';
 import request from 'graphql-request';
-import MainDocs from '../../components/Docs/MainDocs/Docs';
 import {
   buildClientSchema,
   getIntrospectionQuery,
@@ -15,7 +14,11 @@ import {
   IntrospectionType,
 } from 'graphql';
 import { Schema } from '../../type/schemas';
+import Editor from '../../components/Editor/Editor';
+import { editorSlice } from '../../toolkitRedux/editorSlice';
+import { useAppDispatch } from '../../hook/redux';
 const Docs = lazy(() => import('../../components/Docs/Docs'));
+const MainDocs = lazy(() => import('../../components/Docs/MainDocs/Docs'));
 
 const Main = () => {
   const [open, setOpen] = useState(true);
@@ -23,28 +26,36 @@ const Main = () => {
   const [schemas, setSchemas] = useState<IntrospectionSchema | null>(null);
   const [currentSchema, setCurrentSchema] = useState<Schema | IntrospectionType | null>(null);
   const [previousSchema, setPreviousSchema] = useState<string[]>([]);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState('');
+  const { changeGraphQLSchema } = editorSlice.actions;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function responseShema() {
-      const data: IntrospectionQuery = await request(
-        'https://rickandmortyapi.com/graphql',
-        getIntrospectionQuery()
-      );
-      setSchemas(data.__schema);
-      buildClientSchema(data);
+    async function responseSchema() {
+      try {
+        const data: IntrospectionQuery = await request(
+          'https://rickandmortyapi.com/graphql',
+          getIntrospectionQuery()
+        );
+        setSchemas(data.__schema);
+        buildClientSchema(data);
+        dispatch(changeGraphQLSchema(buildClientSchema(data)));
+      } catch (error) {
+        setError('Error fetching schema');
+      }
     }
-    responseShema();
+    responseSchema();
   }, []);
 
-  useEffect(() => {
-    console.log(previousSchema);
-  }, [previousSchema]);
+  useEffect(() => {}, [previousSchema]);
   return (
-    <div className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
+    <div ref={mainRef} className={open ? style.wrapper : `${style.wrapper} ${style.active}`}>
       <DocsWrapper setOpen={setOpen} open={open} />
       <Suspense fallback={<LoaderWrapper />}>
         {open && <div></div>}
-        {!open && !currentSchema && (
+        {!open && error && <div style={{ color: 'red' }}>{error}</div>}
+        {!open && !error && !currentSchema && (
           <MainDocs
             schemas={schemas}
             setCurrentSchema={setCurrentSchema}
@@ -69,7 +80,13 @@ const Main = () => {
           setOpenAdditionalEditor={setOpenAdditionalEditor}
         />
       </div>
-      <div className={style.wrapperResponse} />
+      <div className={style.wrapperResponse}>
+        <Editor
+          purpose="response"
+          parentContainerRef={mainRef}
+          openAdditionalEditor={openAdditionalEditor}
+        />
+      </div>
     </div>
   );
 };

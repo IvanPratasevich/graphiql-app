@@ -56,7 +56,7 @@ export function PasswordIsValidated({ setValidationPassword, setValuePassword }:
   useEffect(() => {
     setValuePassword(value);
     setValidationPassword(!(strength === 100));
-  }, [value]);
+  }, [setValidationPassword, setValuePassword, strength, value]);
 
   return (
     <Box maw={400} mx="auto">

@@ -1,52 +1,55 @@
-.wrapper{
+.wrapper {
+  margin: 0 auto;
+  max-width: 1350px;
   display: grid;
-  grid-template-columns: 1.7rem 1px 1fr 1fr ; 
+  grid-template-columns: 1.7rem 1px 1fr 1fr;
   height: calc(100vh - 160px);
   padding-top: 140px;
-  gap:10px;
+  gap: 10px;
 }
 
-.wrapperRequest{
-  gap:10px;
+.wrapperRequest {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.wrapperRedactor, .wrapperVariables{
+.wrapperRedactor,
+.wrapperVariables {
   padding: 10px;
-  height: calc(50vh - 160px) ;
-  border: 1px solid rgb(60, 60, 247)
+  height: calc(50vh - 160px);
+  border: 1px solid rgb(60, 60, 247);
 }
 
-.wrapperRedactor{
+.wrapperRedactor {
   display: grid;
-  grid-template-columns: 1fr 1.7rem; 
+  grid-template-columns: 1fr 1.7rem;
 }
 
-.wrapperVariables{
+.wrapperVariables {
   display: grid;
-  grid-template-rows: 2rem 1fr ; 
+  grid-template-rows: 2rem 1fr;
 }
 
-.redactor{
-background-color: rgba(83, 83, 248, 0.114);
-}
-
-.variables{
+.redactor {
   background-color: rgba(83, 83, 248, 0.114);
 }
 
-.wrapperButtons{
+.variables {
+  background-color: rgba(83, 83, 248, 0.114);
+}
+
+.wrapperButtons {
   display: flex;
 }
 
-.wrapperResponse{
+.wrapperResponse {
+  display: grid;
   padding: 10px;
-  height:calc(100vh - 310px);
-  border: 1px solid rgb(60, 60, 247)
+  border: 1px solid rgb(60, 60, 247);
 }
 
-.active{
+.active {
   grid-template-columns: 1.7rem 0.4fr 1fr 1fr;
 }
 
@@ -55,7 +58,7 @@ background-color: rgba(83, 83, 248, 0.114);
     height: auto;
     grid-template-columns: 1fr;
   }
-  .active{
-    grid-template-columns: 1fr ;
+  .active {
+    grid-template-columns: 1fr;
   }
 }

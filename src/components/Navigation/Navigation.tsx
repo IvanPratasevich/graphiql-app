@@ -1,14 +1,5 @@
 import styles from './Navigation.module.scss';
-import {
-  Button,
-  Drawer,
-  Flex,
-  Loader,
-  Modal,
-  NavLink,
-  Switch,
-  useMantineTheme,
-} from '@mantine/core';
+import { Button, Flex, Loader, Modal, NavLink } from '@mantine/core';
 import { NavLink as NavLinkReactRotuter } from 'react-router-dom';
 import {
   IconHome2,
@@ -23,7 +14,7 @@ import { auth } from '../../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const Navigation = ({ hidden, opened }: { hidden: boolean; opened?: boolean }) => {

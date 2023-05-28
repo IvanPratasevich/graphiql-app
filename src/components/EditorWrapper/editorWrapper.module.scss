@@ -1,15 +1,15 @@
 .wrapperEditor {
   display: grid;
-  grid-template-columns: 1fr 2rem; 
+  grid-template-columns: 1fr 2rem;
   padding: 10px;
-  height: calc(50vh - 160px) ;
-  border: 1px solid rgb(60, 60, 247)
+  height: calc(50vh - 160px);
+  border: 1px solid rgb(60, 60, 247);
 }
 
-.editor{
-background-color: rgba(83, 83, 248, 0.114);
+.editor {
+  background-color: rgba(83, 83, 248, 0.114);
 }
 
-.grow{
-  height: calc(100vh - 375px)
+.grow {
+  height: calc(100vh - 375px);
 }

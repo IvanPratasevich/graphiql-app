@@ -1,6 +1,3 @@
-import { Navigate, Routes, Route } from 'react-router';
-
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { auth } from './firebase/firebase';
@@ -12,10 +9,20 @@ import { LoaderWrapper } from './components/LoaderWrapper/LoaderWrapper';
 import Footer from './components/Footer/Footer';
 import { Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useAppDispatch } from './hook/redux';
+import { userSlice } from './toolkitRedux/userValid';
+import { errorSlice } from './toolkitRedux/error';
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
   const [opened, { open, close }] = useDisclosure(false);
+
+  const { addUser } = userSlice.actions;
+  const dispatch = useAppDispatch();
+  const { addError } = errorSlice.actions;
+
+  dispatch(addUser(user?.uid));
+  dispatch(addError(error?.message));
 
   window.addEventListener('offline', () => {
     open();
