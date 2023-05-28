@@ -105,7 +105,8 @@ const Editor = (props: {
       }
       getData();
     }
-  }, [changeMakeRequest, changeResponse, dispatch, headers, main, makeRequest, open, variables]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [makeRequest]);
 
   useEffect(() => {
     if (openAdditionalEditor || openAdditionalEditor) {
