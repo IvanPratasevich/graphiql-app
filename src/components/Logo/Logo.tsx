@@ -62,7 +62,9 @@ const Logo = (props: { location: string }) => {
 
   useEffect(() => {
     window.addEventListener('load', () => setPageLoaded(true));
-    return () => window.removeEventListener('load', () => setPageLoaded(true));
+    return () => {
+      window.removeEventListener('load', () => setPageLoaded(true));
+    };
   }, []);
 
   useEffect(() => {

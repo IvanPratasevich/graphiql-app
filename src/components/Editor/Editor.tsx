@@ -109,10 +109,8 @@ const Editor = (props: {
   }, [makeRequest]);
 
   useEffect(() => {
-    if (openAdditionalEditor || openAdditionalEditor) {
-      if (parentContainerRef) {
-        setHeight(parentContainerRef!.current!.clientHeight);
-      }
+    if (parentContainerRef) {
+      setHeight(parentContainerRef!.current!.clientHeight);
     }
 
     const handleResize = () => {
@@ -123,8 +121,11 @@ const Editor = (props: {
 
     window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', () => handleResize);
-  }, [parentContainerRef, openAdditionalEditor]);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openAdditionalEditor]);
 
   switch (purpose) {
     case 'request':
