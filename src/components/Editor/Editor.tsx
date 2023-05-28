@@ -6,8 +6,9 @@ import { tokyoNightStorm } from '@uiw/codemirror-theme-tokyo-night-storm';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
-import request from 'graphql-request';
+import request, { gql } from 'graphql-request';
 import { Flex, Loader } from '@mantine/core';
+import isJSON from '@stdlib/assert-is-json';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
@@ -35,7 +36,15 @@ const Editor = (props: {
       async function getData() {
         try {
           const parseJSON = (str: string, errName: string) => {
+            if (str.split('').every((symbol) => symbol === ' ')) {
+              return '';
+            }
+
             try {
+              if (!isJSON(str)) {
+                throw new Error(errName);
+              }
+
               return JSON.parse(str);
             } catch {
               throw new Error(errName);
@@ -45,9 +54,15 @@ const Editor = (props: {
           const variablesJson = parseJSON(variables.query, 'Variables are not a JSON object.');
           const headersJson = parseJSON(headers.query, 'Headers are not a JSON object.');
 
+          console.log(variablesJson, headersJson);
+
+          const document = gql`
+            ${main.query}
+          `;
+
           const data = await request(
             'https://rickandmortyapi.com/graphql',
-            main.query,
+            document,
             variablesJson,
             headersJson
           );
@@ -55,6 +70,7 @@ const Editor = (props: {
           dispatch(changeResponse(JSON.stringify({ data: data }, null, '\t')));
           dispatch(changeMakeRequest(false));
         } catch (err) {
+          console.log(err);
           dispatch(changeMakeRequest(false));
 
           if ((err as Error).message.includes('are not a JSON object.')) {
@@ -88,6 +104,7 @@ const Editor = (props: {
       return (
         <>
           <CodeMirror
+            onError={() => console.log('error')}
             basicSetup={{}}
             onChange={(code) => dispatch(changeMainQuery(code))}
             value={main.query}

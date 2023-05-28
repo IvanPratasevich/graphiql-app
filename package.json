@@ -41,6 +41,7 @@
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.1.8",
     "@codemirror/lang-json": "^6.0.1",
+    "@stdlib/assert-is-json": "^0.0.8",
     "@types/lodash.throttle": "^4.1.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
