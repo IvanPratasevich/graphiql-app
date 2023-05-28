@@ -7,64 +7,69 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
 import request from 'graphql-request';
+import { Flex, Loader } from '@mantine/core';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
   parentContainerRef: RefObject<HTMLDivElement>;
   purpose: string;
 }) => {
-  const { headers, main, variables, makeRequest } = useAppSelector((state) => state.editorSlice);
-  const { changeMakeRequest, changeMainQuery, changeHeadersQuery, changeVariablesQuery } =
-    editorSlice.actions;
+  const { headers, main, variables, makeRequest, response } = useAppSelector(
+    (state) => state.editorSlice
+  );
+  const {
+    changeMainQuery,
+    changeHeadersQuery,
+    changeVariablesQuery,
+    changeResponse,
+    changeMakeRequest,
+  } = editorSlice.actions;
   const dispatch = useAppDispatch();
-
-  const [code, setCode] = useState('');
-
-  useEffect(() => {
-    console.log(code);
-  }, [code]);
 
   const { openAdditionalEditor, parentContainerRef, purpose } = props;
 
   const [heightValue, setHeight] = useState<number>();
-  console.log(variables.query);
 
   useEffect(() => {
-    console.log(variables);
-    if (variables.query) {
-      console.log(JSON.parse(variables.query));
+    if (makeRequest) {
+      async function getData() {
+        try {
+          const parseJSON = (str: string, errName: string) => {
+            try {
+              return JSON.parse(str);
+            } catch {
+              throw new Error(errName);
+            }
+          };
+
+          const variablesJson = parseJSON(variables.query, 'Variables are not a JSON object.');
+          const headersJson = parseJSON(headers.query, 'Headers are not a JSON object.');
+
+          const data = await request(
+            'https://rickandmortyapi.com/graphql',
+            main.query,
+            variablesJson,
+            headersJson
+          );
+
+          dispatch(changeResponse(JSON.stringify({ data: data }, null, '\t')));
+          dispatch(changeMakeRequest(false));
+        } catch (err) {
+          dispatch(changeMakeRequest(false));
+
+          if ((err as Error).message.includes('are not a JSON object.')) {
+            dispatch(changeResponse((err as Error).message));
+            return;
+          }
+
+          const errJson = (err as Error).message.slice((err as Error).message.indexOf(`{`));
+
+          dispatch(changeResponse(JSON.stringify(JSON.parse(errJson), null, '\t')));
+        }
+      }
+      getData();
     }
-
-    // async function getData() {
-    //   await request(
-    //     'https://rickandmortyapi.com/graphql',
-    //     main.query,
-    //     JSON.parse(variables.query),
-    //     headers.query
-    //   );
-    //   const data = await request('https://rickandmortyapi.com/graphql', main.query);
-    //   console.log(data);
-    // }
-    // getData();
-  }, [headers, main, makeRequest, variables]);
-
-  useEffect(() => {
-    switch (purpose) {
-      case 'request':
-        dispatch(changeMainQuery(code));
-        break;
-      case 'headers':
-        dispatch(changeHeadersQuery(code));
-        break;
-
-      case 'variables':
-        dispatch(changeVariablesQuery(code));
-        break;
-
-      default:
-        break;
-    }
-  }, [changeHeadersQuery, changeMainQuery, changeVariablesQuery, code, dispatch, purpose]);
+  }, [changeMakeRequest, changeResponse, dispatch, headers, main, makeRequest, variables]);
 
   useEffect(() => {
     if (openAdditionalEditor || openAdditionalEditor) {
@@ -84,8 +89,8 @@ const Editor = (props: {
         <>
           <CodeMirror
             basicSetup={{}}
-            onChange={(value) => setCode(value)}
-            value="console.log('hello world!');"
+            onChange={(code) => dispatch(changeMainQuery(code))}
+            value={main.query}
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}
             theme={tokyoNightStorm}
@@ -99,8 +104,8 @@ const Editor = (props: {
         <>
           <CodeMirror
             basicSetup={{}}
-            onChange={(value) => setCode(value)}
-            value={variables.query}
+            onChange={(code) => dispatch(changeHeadersQuery(code))}
+            value={headers.query}
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}
             theme={tokyoNightStorm}
@@ -114,7 +119,7 @@ const Editor = (props: {
         <>
           <CodeMirror
             basicSetup={{}}
-            onChange={(value) => setCode(value)}
+            onChange={(code) => dispatch(changeVariablesQuery(code))}
             value={variables.query}
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}
@@ -124,12 +129,29 @@ const Editor = (props: {
         </>
       );
 
+    case 'response':
+      return (
+        <>
+          <CodeMirror
+            basicSetup={{
+              lineNumbers: false,
+            }}
+            onChange={(code) => dispatch(changeVariablesQuery(code))}
+            value={response.query}
+            maxHeight={`${heightValue! - 20}px`}
+            height={'100%'}
+            theme={tokyoNightStorm}
+            extensions={[json(), EditorView.lineWrapping]}
+            readOnly
+          />
+        </>
+      );
+
     default:
       return (
         <>
           <CodeMirror
             basicSetup={{}}
-            onChange={(value) => setCode(value)}
             value="console.log('hello world!');"
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}

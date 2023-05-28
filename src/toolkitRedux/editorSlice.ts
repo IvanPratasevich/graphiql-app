@@ -13,20 +13,37 @@ interface IInitialState {
     query: string;
   };
 
+  response: {
+    query: string;
+  };
+
   makeRequest: boolean;
 }
 
 const initialState: IInitialState = {
   main: {
-    query: '',
+    query: `query get($name: String!) {
+      characters(page: 1, filter: { name: $name }) {
+        info {
+          count
+        }
+        results {
+          name
+        }
+      }
+    }`,
   },
 
   headers: {
-    query: '',
+    query: `{"Token": "123abc"}`,
   },
 
   variables: {
-    query: `{"variable": "2"}`,
+    query: `{"name": "Morty"}`,
+  },
+
+  response: {
+    query: '',
   },
 
   makeRequest: false,
@@ -50,6 +67,10 @@ export const editorSlice = createSlice({
 
     changeMakeRequest(state, action: PayloadAction<boolean>) {
       state.makeRequest = action.payload;
+    },
+
+    changeResponse(state, action: PayloadAction<string>) {
+      state.response.query = action.payload;
     },
   },
 });
