@@ -124,7 +124,7 @@ const Editor = (props: {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', () => handleResize);
-  }, [parentContainerRef, openAdditionalEditor, heightValue]);
+  }, [parentContainerRef, openAdditionalEditor]);
 
   switch (purpose) {
     case 'request':
