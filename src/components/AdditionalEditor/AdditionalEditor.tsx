@@ -2,7 +2,7 @@ import { Button, ActionIcon } from '@mantine/core';
 import style from './additionalEditor.module.scss';
 import { setOpenAdditionalEditor } from '../../type/tuype';
 import { IconArrowsDownUp } from '@tabler/icons-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Editor from '../Editor/Editor';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { headersSlice } from '../../toolkitRedux/additionalHeaders';
@@ -61,22 +61,24 @@ export const AdditionalEditor = ({
           <IconArrowsDownUp size={20} strokeWidth={2} color={'#edecdd'} />
         </ActionIcon>
       </div>
-
-      <div className={headers ? style.editor_hidden : style.additionalEditor}>
-        <Editor
-          purpose="headers"
-          parentContainerRef={additionalEditorWrapperRef}
-          openAdditionalEditor={openAdditionalEditor}
-        />
-      </div>
-
-      <div className={!headers ? style.editor_hidden : style.additionalEditor}>
-        <Editor
-          purpose="variables"
-          parentContainerRef={additionalEditorWrapperRef}
-          openAdditionalEditor={openAdditionalEditor}
-        />
-      </div>
+      {openAdditionalEditor && (
+        <>
+          <div className={headers ? style.editor_hidden : style.additionalEditor}>
+            <Editor
+              purpose="headers"
+              parentContainerRef={additionalEditorWrapperRef}
+              openAdditionalEditor={openAdditionalEditor}
+            />
+          </div>
+          <div className={!headers ? style.editor_hidden : style.additionalEditor}>
+            <Editor
+              purpose="variables"
+              parentContainerRef={additionalEditorWrapperRef}
+              openAdditionalEditor={openAdditionalEditor}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

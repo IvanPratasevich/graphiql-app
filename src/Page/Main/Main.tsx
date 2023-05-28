@@ -6,7 +6,6 @@ import { lazy } from 'react';
 import { LoaderWrapper } from '../../components/LoaderWrapper/LoaderWrapper';
 import { AdditionalEditor } from '../../components/AdditionalEditor/AdditionalEditor';
 import request from 'graphql-request';
-import MainDocs from '../../components/Docs/MainDocs/Docs';
 import {
   buildClientSchema,
   getIntrospectionQuery,
@@ -17,6 +16,7 @@ import {
 import { Schema } from '../../type/schemas';
 import Editor from '../../components/Editor/Editor';
 const Docs = lazy(() => import('../../components/Docs/Docs'));
+const MainDocs = lazy(() => import('../../components/Docs/MainDocs/Docs'));
 
 const Main = () => {
   const [open, setOpen] = useState(true);
@@ -25,17 +25,22 @@ const Main = () => {
   const [currentSchema, setCurrentSchema] = useState<Schema | IntrospectionType | null>(null);
   const [previousSchema, setPreviousSchema] = useState<string[]>([]);
   const mainRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    async function responseShema() {
-      const data: IntrospectionQuery = await request(
-        'https://rickandmortyapi.com/graphql',
-        getIntrospectionQuery()
-      );
-      setSchemas(data.__schema);
-      buildClientSchema(data);
+    async function responseSchema() {
+      try {
+        const data: IntrospectionQuery = await request(
+          'https://rickandmortyapi.com/graphql',
+          getIntrospectionQuery()
+        );
+        setSchemas(data.__schema);
+        buildClientSchema(data);
+      } catch (error) {
+        setError('Error fetching schema');
+      }
     }
-    responseShema();
+    responseSchema();
   }, []);
 
   useEffect(() => {}, [previousSchema]);
@@ -44,7 +49,8 @@ const Main = () => {
       <DocsWrapper setOpen={setOpen} open={open} />
       <Suspense fallback={<LoaderWrapper />}>
         {open && <div></div>}
-        {!open && !currentSchema && (
+        {!open && error && <div style={{ color: 'red' }}>{error}</div>}
+        {!open && !error && !currentSchema && (
           <MainDocs
             schemas={schemas}
             setCurrentSchema={setCurrentSchema}

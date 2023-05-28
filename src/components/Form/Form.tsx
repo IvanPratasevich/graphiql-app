@@ -1,6 +1,5 @@
 import { useForm } from '@mantine/form';
 import { Button, Group, TextInput, Box } from '@mantine/core';
-import { useSetState } from '@mantine/hooks';
 import { useState } from 'react';
 import { PasswordIsValidated } from '../Password/Password';
 import styles from './Form.module.scss';
@@ -13,7 +12,6 @@ interface Form {
 }
 export function Form({ title, handleClick }: Form) {
   const { t } = useTranslation();
-  const [state, setState] = useSetState({});
 
   const [valuePassword, setValuePassword] = useState('');
   const [validationPassword, setValidationPassword] = useState(true);
@@ -28,7 +26,7 @@ export function Form({ title, handleClick }: Form) {
     },
   });
 
-  const wrappeIsValid = () => {
+  const wrapperIsValid = () => {
     form.isValid() && handleClick(form.values.email, valuePassword);
   };
 
@@ -37,14 +35,7 @@ export function Form({ title, handleClick }: Form) {
       className={styles.container__auth}
       style={{ height: windowInnerHeight - 160, paddingTop: '140px' }}
     >
-      <Box
-        component="form"
-        w={400}
-        mx="auto"
-        onSubmit={form.onSubmit(() => {
-          setState(form.values);
-        })}
-      >
+      <Box component="form" w={400} mx="auto">
         <TextInput
           label={t('your_email')}
           placeholder={t('your_email')!}
@@ -66,7 +57,7 @@ export function Form({ title, handleClick }: Form) {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              wrappeIsValid();
+              wrapperIsValid();
             }}
             disabled={validationPassword}
           >

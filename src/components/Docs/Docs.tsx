@@ -37,7 +37,6 @@ const Docs = (props: {
     setCurrentSchema(newSchema || null);
     setPreviousSchema([...previousSchema]);
   };
-  console.log(666, currentSchema.fields);
   return (
     <div className={style.docs}>
       <div
