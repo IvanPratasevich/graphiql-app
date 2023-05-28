@@ -2,8 +2,6 @@ import { Title } from '@mantine/core';
 import styles from './Logo.module.scss';
 import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useHover } from '@mantine/hooks';
-// import throttle from 'lodash.throttle';
-import { useLocation } from 'react-router';
 
 interface IPosition {
   x: number;
@@ -22,8 +20,6 @@ const Logo = (props: { location: string }) => {
   const intervalRef = useRef<number | NodeJS.Timer>(0);
   const [degree, setDegree] = useState(0);
   const [pageLoaded, setPageLoaded] = useState(false);
-  const [visible, setVisible] = useState(false);
-  // const pathLocation = useLocation();
 
   const firstElectron: IPosition = {
     x: 37.5,
@@ -58,56 +54,11 @@ const Logo = (props: { location: string }) => {
     angle: 0,
   };
 
-  // const fourthElectron: IPosition = {
-  //   x: 24.108,
-  //   y: 2.596,
-  //   radius: 2.5,
-  //   cx: 24.98,
-  //   cy: 25.014,
-  //   rx: 8.593,
-  //   ry: 22.534,
-  //   angle: 0,
-  // };
-
-  // const fifthElectron: IPosition = {
-  //   x: 30.504,
-  //   y: 24.986,
-  //   radius: 2.5,
-  //   cx: 24.97,
-  //   cy: 24.986,
-  //   rx: 22.534,
-  //   ry: 8.593,
-  //   angle: 0,
-  // };
-
   firstElectron.angle = -1 * Math.acos((firstElectron.x - firstElectron.cx) / firstElectron.rx);
   secondElectron.angle = -1 * Math.acos((secondElectron.x - secondElectron.cx) / secondElectron.rx);
   thirdElectron.angle = -1 * Math.acos((thirdElectron.x - thirdElectron.cx) / thirdElectron.rx);
-  // fourthElectron.angle = -1 * Math.acos((fourthElectron.x - fourthElectron.cx) / fourthElectron.rx);
 
   const [positions, setPositions] = useState([firstElectron, secondElectron, thirdElectron]);
-
-  // useEffect(() => {
-  // if (pathLocation.pathname === '/sign-in' || pathLocation.pathname === '/sign-up') {
-  //   setVisible(true);
-  // }
-
-  //   const isVisibleHandler = () => {
-  //     if (scrollY + innerHeight >= ref.current.offsetTop) {
-  //       setVisible(true);
-  //     } else {
-  //       setVisible(false);
-  //     }
-  //   };
-
-  //   if (location === 'footer') {
-  //     window.addEventListener('scroll', throttle(isVisibleHandler, 100));
-  //   }
-
-  //   return () => {
-  //     window.removeEventListener('scroll', throttle(isVisibleHandler, 100));
-  //   };
-  // }, [location, pathLocation.pathname, ref]);
 
   useEffect(() => {
     window.addEventListener('load', () => setPageLoaded(true));
@@ -129,21 +80,14 @@ const Logo = (props: { location: string }) => {
     };
   }, [hovered, degree]);
 
-  // Parametric equation of an ellipse x^2 / a^2 + y^2 / b^2 = 1
-  // --
-  // | x = a * cos(phi)   // phi - angle
-  // |
-  // | y = b * sin(phi)   // phi - angle
-  // --
-
   const animate = useCallback((electronIdx: number) => {
     setPositions((prev) =>
       prev.map((electron, idx) => {
         const { rx, ry, cx, cy, angle } = electron;
-        const speed = 0.03; // radian
-        const newAngle = angle + speed; // radian
-        const x = cx + rx * Math.cos(newAngle); // rx - ellipse horizontal radius
-        const y = cy + ry * Math.sin(newAngle); // rx - ellipse vertical radius
+        const speed = 0.03;
+        const newAngle = angle + speed;
+        const x = cx + rx * Math.cos(newAngle);
+        const y = cy + ry * Math.sin(newAngle);
         return idx === electronIdx ? { ...electron, x, y, angle: newAngle } : electron;
       })
     );
@@ -151,7 +95,6 @@ const Logo = (props: { location: string }) => {
 
   useEffect(() => {
     const requestIds: number[] = [];
-    // ((pageLoaded && location === 'header') || (pageLoaded && location === 'footer' && visible))
     if (hovered) {
       for (let electronIdx = 0; electronIdx < positions.length; electronIdx += 1) {
         const animateFn = () => animate(electronIdx);
@@ -218,14 +161,6 @@ const Logo = (props: { location: string }) => {
           r={positions[0].radius}
         ></circle>
 
-        {/* <circle
-          fill="url(#electron_fifth)"
-          style={{
-            transform: `translate(${positions[4].x}px, ${positions[4].y}px)`,
-          }}
-          r={positions[4].radius}
-        ></circle> */}
-
         <circle
           fill={location === 'header' ? 'url(#electron_third)' : 'url(#electron_third_footer)'}
           style={{
@@ -254,13 +189,6 @@ const Logo = (props: { location: string }) => {
           r={positions[1].radius}
         ></circle>
 
-        {/* <circle
-          fill="url(#electron_fourth)"
-          style={{
-            transform: `matrix(0.866, -0.5, 0.5, 0.866, -9.1606, 15.8414) translate(${positions[3].x}px, ${positions[3].y}px)`,
-          }}
-          r={positions[1].radius}
-        ></circle> */}
         <defs>
           {location === 'header' ? (
             <>
@@ -318,16 +246,6 @@ const Logo = (props: { location: string }) => {
               </radialGradient>
             </>
           )}
-
-          {/* <radialGradient id="electron_fourth" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#000000" />
-            <stop offset="100%" stopColor="#ffffff" />
-          </radialGradient>
-
-          <radialGradient id="electron_fifth" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#ff0000" />
-            <stop offset="100%" stopColor="#000000" />
-          </radialGradient> */}
         </defs>
       </svg>
       <Title order={1}>GraphiQL</Title>

@@ -6,6 +6,7 @@ import { useRef } from 'react';
 import Editor from '../Editor/Editor';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { headersSlice } from '../../toolkitRedux/additionalHeaders';
+import { useTranslation } from 'react-i18next';
 
 export const AdditionalEditor = ({
   openAdditionalEditor,
@@ -15,7 +16,7 @@ export const AdditionalEditor = ({
   const { headers } = useAppSelector((state) => state.headersSlice);
   const { changeHeaders } = headersSlice.actions;
   const dispatch = useAppDispatch();
-
+  const { t } = useTranslation();
   return (
     <div
       ref={additionalEditorWrapperRef}
@@ -35,7 +36,7 @@ export const AdditionalEditor = ({
             }}
             disabled={!headers}
           >
-            Variables
+            {t('variables')}
           </Button>
           &nbsp;
           <Button
@@ -48,7 +49,7 @@ export const AdditionalEditor = ({
             }}
             disabled={headers}
           >
-            Headers
+            {t('headers')}
           </Button>
         </div>
         <ActionIcon
