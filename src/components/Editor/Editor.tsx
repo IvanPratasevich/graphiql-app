@@ -117,7 +117,9 @@ const Editor = (props: {
     }
 
     window.addEventListener('resize', () => {
-      setHeight(parentContainerRef!.current!.clientHeight);
+      if (parentContainerRef!) {
+        setHeight(parentContainerRef!.current!.clientHeight);
+      }
     });
 
     setHeight(parentContainerRef!.current!.clientHeight);
