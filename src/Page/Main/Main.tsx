@@ -46,7 +46,7 @@ const Main = () => {
       }
     }
     responseSchema();
-  }, []);
+  }, [changeGraphQLSchema, dispatch]);
 
   useEffect(() => {}, [previousSchema]);
   return (

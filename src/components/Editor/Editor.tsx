@@ -6,13 +6,13 @@ import { tokyoNightStorm } from '@uiw/codemirror-theme-tokyo-night-storm';
 import { RefObject, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
-import { GraphQLClient, gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { Modal } from '@mantine/core';
 import isJSON from '@stdlib/assert-is-json';
 import { useDisclosure } from '@mantine/hooks';
 import { Text } from '@mantine/core';
 import { graphql } from 'cm6-graphql';
-import { GraphQLSchema, GraphQLSchemaConfig } from 'graphql';
+import { GraphQLSchema } from 'graphql';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
@@ -113,18 +113,18 @@ const Editor = (props: {
 
   useEffect(() => {
     if (openAdditionalEditor || openAdditionalEditor) {
-      if (!parentContainerRef) {
-        setHeight(parentContainerRef.current.clientHeight);
+      if (parentContainerRef) {
+        setHeight(parentContainerRef!.current!.clientHeight);
       }
     }
 
     window.addEventListener('resize', () => {
-      if (!parentContainerRef) {
+      if (parentContainerRef) {
         setHeight(parentContainerRef!.current!.clientHeight);
       }
     });
 
-    if (!parentContainerRef) {
+    if (parentContainerRef) {
       setHeight(parentContainerRef!.current!.clientHeight);
     }
   }, [parentContainerRef, openAdditionalEditor, heightValue]);

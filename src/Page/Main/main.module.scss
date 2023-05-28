@@ -3,7 +3,6 @@
   max-width: 1350px;
   display: grid;
   grid-template-columns: 1.7rem 1px 1fr 1fr;
-  height: calc(100vh - 160px);
   padding-top: 140px;
   gap: 10px;
 }
@@ -13,7 +12,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
 
 .redactor {
   background-color: rgba(83, 83, 248, 0.114);
@@ -45,7 +43,7 @@
   .active {
     grid-template-columns: 1fr;
   }
-  .wrapperRequest{
+  .wrapperRequest {
     gap: 10px;
   }
 }
