@@ -72,6 +72,7 @@ export function PasswordIsValidated({ setValidationPassword, setValuePassword }:
             onBlurCapture={() => setPopoverOpened(false)}
           >
             <PasswordInput
+              autoComplete="off"
               withAsterisk
               label={t('your_password')}
               placeholder={t('your_password')!}
