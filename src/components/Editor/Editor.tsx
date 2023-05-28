@@ -51,8 +51,17 @@ const Editor = (props: {
             }
           };
 
-          const variablesJson = parseJSON(variables.query, 'Variables are not a JSON object.');
-          const headersJson = parseJSON(headers.query, 'Headers are not a JSON object.');
+          const variablesJson = parseJSON(
+            variables.query,
+            'Check the correctness of the entered data in the Variables section (the data must be in JSON format)'
+          );
+
+          const headersJson = parseJSON(
+            headers.query,
+            'Check the correctness of the entered data in the Headers section'
+          );
+
+          console.log(headersJson);
 
           console.log(variablesJson, headersJson);
 
@@ -60,20 +69,27 @@ const Editor = (props: {
             ${main.query}
           `;
 
-          const data = await request(
-            'https://rickandmortyapi.com/graphql',
-            document,
-            variablesJson,
-            headersJson
-          );
+          const response = await fetch('https://rickandmortyapi.com/graphql', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...headersJson,
+            },
+            body: JSON.stringify({
+              query: document,
+              variables: variablesJson,
+            }),
+          });
 
-          dispatch(changeResponse(JSON.stringify({ data: data }, null, '\t')));
+          const data = await response.json();
+
+          dispatch(changeResponse(JSON.stringify(data, null, '\t')));
           dispatch(changeMakeRequest(false));
         } catch (err) {
           console.log(err);
           dispatch(changeMakeRequest(false));
 
-          if ((err as Error).message.includes('are not a JSON object.')) {
+          if ((err as Error).message.includes('Check the correctness of the entered data')) {
             dispatch(changeResponse((err as Error).message));
             return;
           }
