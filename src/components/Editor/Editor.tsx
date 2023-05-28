@@ -229,7 +229,7 @@ const Editor = (props: {
         <>
           <CodeMirror
             basicSetup={{}}
-            value="console.log('hello world!');"
+            value="let a = 5;"
             maxHeight={`${heightValue! - 20}px`}
             height={'100%'}
             theme={tokyoNightStorm}
