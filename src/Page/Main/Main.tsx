@@ -15,6 +15,8 @@ import {
 } from 'graphql';
 import { Schema } from '../../type/schemas';
 import Editor from '../../components/Editor/Editor';
+import { editorSlice } from '../../toolkitRedux/editorSlice';
+import { useAppDispatch } from '../../hook/redux';
 const Docs = lazy(() => import('../../components/Docs/Docs'));
 const MainDocs = lazy(() => import('../../components/Docs/MainDocs/Docs'));
 
@@ -26,6 +28,8 @@ const Main = () => {
   const [previousSchema, setPreviousSchema] = useState<string[]>([]);
   const mainRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState('');
+  const { changeGraphQLSchema } = editorSlice.actions;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function responseSchema() {
@@ -36,6 +40,7 @@ const Main = () => {
         );
         setSchemas(data.__schema);
         buildClientSchema(data);
+        dispatch(changeGraphQLSchema(buildClientSchema(data)));
       } catch (error) {
         setError('Error fetching schema');
       }

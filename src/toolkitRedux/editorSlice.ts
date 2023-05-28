@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { GraphQLSchema, buildSchema } from 'graphql';
 
 interface IInitialState {
   main: {
@@ -18,6 +19,8 @@ interface IInitialState {
   };
 
   makeRequest: boolean;
+
+  graphQLSchema: unknown;
 }
 
 const initialState: IInitialState = {
@@ -47,6 +50,8 @@ const initialState: IInitialState = {
   },
 
   makeRequest: false,
+
+  graphQLSchema: '',
 };
 
 export const editorSlice = createSlice({
@@ -71,6 +76,10 @@ export const editorSlice = createSlice({
 
     changeResponse(state, action: PayloadAction<string>) {
       state.response.query = action.payload;
+    },
+
+    changeGraphQLSchema(state, action: PayloadAction<GraphQLSchema>) {
+      state.graphQLSchema = action.payload;
     },
   },
 });

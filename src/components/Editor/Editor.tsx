@@ -6,18 +6,20 @@ import { tokyoNightStorm } from '@uiw/codemirror-theme-tokyo-night-storm';
 import { RefObject, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook/redux';
 import { editorSlice } from '../../toolkitRedux/editorSlice';
-import { gql } from 'graphql-request';
+import { GraphQLClient, gql } from 'graphql-request';
 import { Modal } from '@mantine/core';
 import isJSON from '@stdlib/assert-is-json';
 import { useDisclosure } from '@mantine/hooks';
 import { Text } from '@mantine/core';
+import { graphql } from 'cm6-graphql';
+import { GraphQLSchema, GraphQLSchemaConfig } from 'graphql';
 
 const Editor = (props: {
   openAdditionalEditor: boolean;
   parentContainerRef: RefObject<HTMLDivElement>;
   purpose: string;
 }) => {
-  const { headers, main, variables, makeRequest, response } = useAppSelector(
+  const { graphQLSchema, headers, main, variables, makeRequest, response } = useAppSelector(
     (state) => state.editorSlice
   );
   const {
@@ -125,16 +127,27 @@ const Editor = (props: {
     case 'request':
       return (
         <>
-          <CodeMirror
-            onError={() => console.log('error')}
-            basicSetup={{}}
-            onChange={(code) => dispatch(changeMainQuery(code))}
-            value={main.query}
-            maxHeight={`${heightValue! - 20}px`}
-            height={'100%'}
-            theme={tokyoNightStorm}
-            extensions={[javascript({ jsx: true }), EditorView.lineWrapping]}
-          />
+          {graphQLSchema ? (
+            <CodeMirror
+              basicSetup={{}}
+              onChange={(code) => dispatch(changeMainQuery(code))}
+              value={main.query}
+              maxHeight={`${heightValue! - 20}px`}
+              height={'100%'}
+              theme={tokyoNightStorm}
+              extensions={[EditorView.lineWrapping, graphql(graphQLSchema as GraphQLSchema)]}
+            />
+          ) : (
+            <CodeMirror
+              basicSetup={{}}
+              onChange={(code) => dispatch(changeMainQuery(code))}
+              value={main.query}
+              maxHeight={`${heightValue! - 20}px`}
+              height={'100%'}
+              theme={tokyoNightStorm}
+              extensions={[EditorView.lineWrapping]}
+            />
+          )}
         </>
       );
 
@@ -156,32 +169,33 @@ const Editor = (props: {
     case 'variables':
       return (
         <>
-          <CodeMirror
-            basicSetup={{}}
-            onChange={(code) => dispatch(changeVariablesQuery(code))}
-            value={variables.query}
-            maxHeight={`${heightValue! - 60}px`}
-            height={'100%'}
-            theme={tokyoNightStorm}
-            extensions={[json(), EditorView.lineWrapping]}
-          />
-
-          <Modal opened={opened} onClose={close} size="md" title="API Error" centered>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 50,
-              }}
-            >
-              <div className="apiError" style={{ color: 'red' }}>
-                <Text fz="lg" fw={700}>
-                  {'Error from the API Side!'}
-                </Text>
+          <>
+            <CodeMirror
+              basicSetup={{}}
+              onChange={(code) => dispatch(changeVariablesQuery(code))}
+              value={variables.query}
+              maxHeight={`${heightValue! - 60}px`}
+              height={'100%'}
+              theme={tokyoNightStorm}
+              extensions={[json(), EditorView.lineWrapping]}
+            />
+            <Modal opened={opened} onClose={close} size="md" title="API Error" centered>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 50,
+                }}
+              >
+                <div className="apiError" style={{ color: 'red' }}>
+                  <Text fz="lg" fw={700}>
+                    {'Error from the API Side!'}
+                  </Text>
+                </div>
               </div>
-            </div>
-          </Modal>
+            </Modal>
+          </>
         </>
       );
 
