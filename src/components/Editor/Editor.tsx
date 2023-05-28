@@ -115,15 +115,19 @@ const Editor = (props: {
       }
     }
 
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       if (parentContainerRef) {
         setHeight(parentContainerRef!.current!.clientHeight);
       }
-    });
+    };
+
+    window.addEventListener('resize', () => handleResize);
 
     if (parentContainerRef) {
       setHeight(parentContainerRef!.current!.clientHeight);
     }
+
+    return () => window.removeEventListener('resize', () => handleResize);
   }, [parentContainerRef, openAdditionalEditor, heightValue]);
 
   switch (purpose) {
