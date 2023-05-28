@@ -113,18 +113,18 @@ const Editor = (props: {
 
   useEffect(() => {
     if (openAdditionalEditor || openAdditionalEditor) {
-      if (parentContainerRef!) {
-        setHeight(parentContainerRef!.current!.clientHeight);
+      if (!parentContainerRef) {
+        setHeight(parentContainerRef.current.clientHeight);
       }
     }
 
     window.addEventListener('resize', () => {
-      if (parentContainerRef!) {
+      if (!parentContainerRef) {
         setHeight(parentContainerRef!.current!.clientHeight);
       }
     });
 
-    if (parentContainerRef!) {
+    if (!parentContainerRef) {
       setHeight(parentContainerRef!.current!.clientHeight);
     }
   }, [parentContainerRef, openAdditionalEditor, heightValue]);
