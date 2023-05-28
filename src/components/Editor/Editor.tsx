@@ -43,6 +43,10 @@ const Editor = (props: {
         try {
           const parseJSON = (str: string, errName: string) => {
             try {
+              if (str.trim().length === 0) {
+                return '';
+              }
+
               if (!isJSON(str.trim())) {
                 throw new Error(errName);
               }

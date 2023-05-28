@@ -27,7 +27,7 @@ const Welcome: FC = () => {
               </Title>
               {!clicked ? (
                 <img
-                  src="/src/assets/ytb_yellow.jpg"
+                  src="https://i.ibb.co/4j5VkP8/ytb-yellow.png"
                   onClick={() => isClicked(true)}
                   className={`${styles.video} ${styles.ytbImage}`}
                   alt={t('ytb_video')!}
