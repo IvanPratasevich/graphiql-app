@@ -1,0 +1,47 @@
+#root {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.container {
+  max-width: 1357px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  max-width: 1357px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1400px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 860px) {
+  .hidden {
+    display: none;
+  }
+
+  .navigation_hidden {
+    display: none;
+  }
+}
+
+iframe,
+object,
+embed {
+  max-width: 100%;
+}

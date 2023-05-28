@@ -1,0 +1,8 @@
+export enum firebase {
+  REACT_APP_FIREBASE_AUTH_DOMAIN = 'graphiql-app-3c5b5.firebaseapp.com',
+  REACT_APP_FIREBASE_API_KEY = 'AIzaSyBOKei5h04E8ZdMYA3wxTvtLoNtANrzTvs',
+  REACT_APP_FIREBASE_PROJECT_ID = 'graphiql-app-3c5b5',
+  REACT_APP_FIREBASE_STORAGE_BUCKET = 'graphiql-app-3c5b5.appspot.com',
+  REACT_APP_FIREBASE_MESSAGING_SENDER_ID = '816422532125',
+  REACT_APP_FIREBASE_APP_ID = '1:816422532125:web:f8723afe61c4a81d14c2f',
+}

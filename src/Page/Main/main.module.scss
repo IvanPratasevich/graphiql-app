@@ -1,0 +1,50 @@
+.wrapper {
+  margin: 0 auto;
+  max-width: 1350px;
+  display: grid;
+  grid-template-columns: 1.7rem 1px 1fr 1fr;
+  padding-top: 160px;
+  gap: 10px;
+}
+
+.wrapperRequest {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.redactor {
+  background-color: rgba(83, 83, 248, 0.114);
+}
+
+.variables {
+  background-color: rgba(83, 83, 248, 0.114);
+}
+
+.wrapperButtons {
+  display: flex;
+}
+
+.wrapperResponse {
+  display: grid;
+  padding: 10px;
+  border: 1px solid rgb(60, 60, 247);
+}
+
+.active {
+  grid-template-columns: 1.7rem 0.4fr 1fr 1fr;
+}
+
+@media (max-width: 960px) {
+  .wrapper {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+  .active {
+    grid-template-columns: 1fr;
+  }
+  .wrapperRequest {
+    gap: 10px;
+  }
+}

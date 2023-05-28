@@ -1,0 +1,28 @@
+.wrapperVariables {
+  display: grid;
+  grid-template-rows: 2rem 1fr;
+  padding: 10px;
+  border: 1px solid rgb(60, 60, 247);
+  min-height: 135px;
+}
+
+.variables {
+  background-color: rgba(83, 83, 248, 0.114);
+}
+
+.wrapperButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hidden {
+  min-height: 32px !important;
+}
+
+.editor_hidden {
+  display: none;
+}
+
+.additionalEditor {
+  display: grid;
+}
