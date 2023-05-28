@@ -42,12 +42,8 @@ const Editor = (props: {
       async function getData() {
         try {
           const parseJSON = (str: string, errName: string) => {
-            if (str.split('').every((symbol) => symbol === ' ')) {
-              return '';
-            }
-
             try {
-              if (!isJSON(str)) {
+              if (!isJSON(str.trim())) {
                 throw new Error(errName);
               }
 
