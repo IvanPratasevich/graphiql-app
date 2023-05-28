@@ -212,7 +212,7 @@ const Editor = (props: {
             }}
             onChange={(code) => dispatch(changeVariablesQuery(code))}
             value={response.query}
-            maxHeight={`${heightValue! - 165}px`}
+            maxHeight={`445px`}
             height={'100%'}
             theme={tokyoNightStorm}
             extensions={[json(), EditorView.lineWrapping]}
