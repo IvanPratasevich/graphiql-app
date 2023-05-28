@@ -72,7 +72,11 @@ const Main = () => {
         />
       </div>
       <div className={style.wrapperResponse}>
-        <Editor parentContainerRef={mainRef} openAdditionalEditor={openAdditionalEditor} />
+        <Editor
+          purpose="response"
+          parentContainerRef={mainRef}
+          openAdditionalEditor={openAdditionalEditor}
+        />
       </div>
     </div>
   );

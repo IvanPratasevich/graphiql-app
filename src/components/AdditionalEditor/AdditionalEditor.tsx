@@ -11,7 +11,6 @@ export const AdditionalEditor = ({
   openAdditionalEditor,
   setOpenAdditionalEditor,
 }: setOpenAdditionalEditor) => {
-  const [changeVariablesHeaders, setChangeVariablesHeaders] = useState(true);
   const additionalEditorWrapperRef = useRef<HTMLDivElement>(null);
   const { headers } = useAppSelector((state) => state.headersSlice);
   const { changeHeaders } = headersSlice.actions;
@@ -65,6 +64,7 @@ export const AdditionalEditor = ({
 
       <div className={headers ? style.editor_hidden : style.additionalEditor}>
         <Editor
+          purpose="headers"
           parentContainerRef={additionalEditorWrapperRef}
           openAdditionalEditor={openAdditionalEditor}
         />
@@ -72,6 +72,7 @@ export const AdditionalEditor = ({
 
       <div className={!headers ? style.editor_hidden : style.additionalEditor}>
         <Editor
+          purpose="variables"
           parentContainerRef={additionalEditorWrapperRef}
           openAdditionalEditor={openAdditionalEditor}
         />
